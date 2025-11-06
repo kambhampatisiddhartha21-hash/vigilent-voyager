@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vigilent Voyager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* LOGIN SCREEN */
+    #login-screen {
+      background: url('./background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+    }
+
+    #login-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 0;
+    }
+
+    #login-box {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      width: 360px;
+      margin-right: 80px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    #login-box h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #007BFF;
+    }
+
+    #login-box input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    #login-box button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    #login-box button:hover {
+      background-color: #0056b3;
+    }
+
+    .toggle {
+      color: #007BFF;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-block;
+      text-decoration: underline;
+    }
+
+    /* MAIN PAGE */
+    #main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      position: relative;
+      padding-top: 100px;
+      background: linear-gradient(135deg, #f5f9ff, #dfefff);
+    }
+
+    #location-box {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      border: 2px solid #007BFF;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 16px;
+      color: #333;
+      background-color: #f9f9f9;
+      min-width: 7cm;
+      max-width: 10cm;
+      word-wrap: break-word;
+    }
+
+    .title {
+      font-style: italic;
+      font-size: 60px;
+      color: black;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #555;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .box {
+      width: 10cm;
+      height: 5cm;
+      border: 3px solid #007BFF;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #007BFF;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      margin-top: 50px;
+    }
+
+    .box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .box-desc {
+      font-size: 14px;
+      color: #555;
+      font-weight: normal;
+      margin-top: 8px;
+      text-transform: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen">
+    <div id="login-box">
+      <h2 id="form-title">Login</h2>
+      <input type="text" id="username" placeholder="Username" style="display:none;" />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="handleSubmit()">Login</button>
+      <p id="error-message" style="color:red; display:none; margin-top:10px;">Invalid credentials!</p>
+      <span class="toggle" onclick="toggleForm()">Don't have an account? Create one</span>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main-content">
+    <div id="location-box">
+      <strong>Your Location</strong><br>
+      Area: <span id="area">Loading...</span><br>
+      District: <span id="district">Loading...</span><br>
+      State: <span id="state">Loading...</span><br>
+      <div id="datetime" style="margin-top:5px; font-size:14px; color:#007BFF;"></div>
+    </div>
+
+    <div class="title">WELCOME TO VIGILENT VOYGER</div>
+    <div class="subtitle">The Vigilent Voyager helps you plan your trip quickly and accurately.<br>Be smart and plan smart.</div>
+
+    <div class="box" onclick="planTrip()">Plan My Trip<div class="box-desc">Plan your trip fast and as per your choice</div></div>
+    <div class="box" onclick="safeScore()">Safe Score<div class="box-desc">Here is the safe score of places you travel</div></div>
+  </div>
+
+  <script>
+    let isSignup = false;
+
+    function toggleForm() {
+      const title = document.getElementById('form-title');
+      const username = document.getElementById('username');
+      const button = document.querySelector('#login-box button');
+      const toggleText = document.querySelector('.toggle');
+      const error = document.getElementById('error-message');
+
+      isSignup = !isSignup;
+      error.style.display = 'none';
+
+      if (isSignup) {
+        title.textContent = 'Create Account';
+        username.style.display = 'block';
+        button.textContent = 'Sign Up';
+        toggleText.textContent = 'Already have an account? Login';
+      } else {
+        title.textContent = 'Login';
+        username.style.display = 'none';
+        button.textContent = 'Login';
+        toggleText.textContent = "Don't have an account? Create one";
+      }
+    }
+
+    function handleSubmit() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('error-message');
+
+      const endpoint = isSignup ? '/signup' : '/login';
+      const body = isSignup ? { username, email, password } : { email, password };
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('main-content').style.display = 'flex';
+          getAccurateLocation();
+        } else {
+          errorMsg.style.display = 'block';
+          errorMsg.textContent = data.message || "Invalid credentials!";
+        }
+      })
+      .catch(() => {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = "Server error!";
+      });
+    }
+
+    function getAccurateLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
+            .then(res => res.json())
+            .then(data => {
+              document.getElementById('area').textContent = data.address.suburb || "N/A";
+              document.getElementById('district').textContent = data.address.city || "N/A";
+              document.getElementById('state').textContent = data.address.state || "N/A";
+            });
+
+          setInterval(() => {
+            const now = new Date();
+            document.getElementById('datetime').textContent =
+              now.toLocaleDateString() + " " + now.toLocaleTimeString();
+          }, 1000);
+        });
+      }
+    }
+
+    function planTrip() { alert('Redirecting to trip planner...'); }
+    function safeScore() { alert('Redirecting to safety scores...'); }
+  </script>
+</body>
+</html>
