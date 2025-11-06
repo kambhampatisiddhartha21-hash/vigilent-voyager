@@ -8,23 +8,29 @@
 
   <style>
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      overflow: hidden;
-    }
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;     /* allow growth if content expands */
+  overflow-y: auto;      /* enable vertical scrolling */
+  background: linear-gradient(135deg, #f5f9ff, #dfefff);
+}
+html, body {
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
 
     /* LOGIN SCREEN */
     #login-screen {
-      background: url('./background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      position: relative;
-    }
+  background: url('./background.jpg') no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;     /* instead of fixed height */
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  overflow-y: auto;      /* ✅ allow scroll if login box overflows */
+}
+
 
     #login-screen::before {
       content: '';
