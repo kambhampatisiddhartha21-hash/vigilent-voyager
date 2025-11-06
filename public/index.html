@@ -6,58 +6,30 @@
   <title>Vigilent Voyager</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- AOS Animation Library -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
   <style>
-    :root {
-      --primary: #007BFF;
-      --accent: #00C4B3;
-      --text-dark: #222;
-      --bg-light: #F5FAFF;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       scroll-behavior: smooth;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-light);
+      overscroll-behavior: contain;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f9ff, #dfefff);
+      color: #333;
       overflow-x: hidden;
     }
 
-    /* NAVBAR */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 10;
+    body.no-scroll {
+      overflow: hidden; /* Prevent scroll when user is logged in */
     }
-
-    .navbar .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .navbar a {
-      text-decoration: none;
-      color: var(--text-dark);
-      font-weight: 600;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .navbar a:hover { color: var(--primary); }
 
     /* HERO SECTION */
     .hero {
@@ -69,31 +41,27 @@
       justify-content: center;
       text-align: center;
       color: white;
-      overflow: hidden;
     }
 
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 123, 255, 0.3));
-      animation: gradientShift 10s ease infinite;
+      background: rgba(0, 0, 0, 0.55);
       z-index: 0;
     }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .hero-content {
+      z-index: 2;
     }
 
-    .hero-content { z-index: 2; padding: 0 20px; }
     .hero-content h1 {
       font-size: 3.5rem;
-      font-family: 'Poppins', sans-serif;
       font-weight: 700;
       margin-bottom: 20px;
+      letter-spacing: 1px;
     }
+
     .hero-content p {
       font-size: 1.2rem;
       margin-bottom: 30px;
@@ -102,35 +70,28 @@
 
     .hero-content .btn {
       padding: 12px 28px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
+      background: #00b894;
       color: white;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
       transition: 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    .hero-content .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
-    /* LOGIN SCREEN */
+    .hero-content .btn:hover {
+      background: #019875;
+      transform: scale(1.05);
+    }
+
+    /* LOGIN SECTION */
     #login-screen {
-      display: none;
-      background: url('./background.jpg') no-repeat center center/cover;
+      background: url('./background.jpg') no-repeat center center;
+      background-size: cover;
       min-height: 100vh;
       display: flex;
       justify-content: flex-end;
       align-items: center;
       position: relative;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    #login-screen.active {
-      display: flex;
-      opacity: 1;
     }
 
     #login-screen::before {
@@ -162,7 +123,7 @@
     #login-box h2 {
       margin-bottom: 20px;
       font-weight: 600;
-      color: var(--primary);
+      color: #007BFF;
     }
 
     #login-box input {
@@ -177,23 +138,22 @@
     #login-box button {
       width: 100%;
       padding: 12px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
+      background-color: #007BFF;
       color: white;
       border: none;
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
       font-weight: 600;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: background 0.3s;
     }
 
     #login-box button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0, 196, 179, 0.4);
+      background-color: #0056b3;
     }
 
     .toggle {
-      color: var(--primary);
+      color: #007BFF;
       font-size: 14px;
       cursor: pointer;
       margin-top: 10px;
@@ -201,114 +161,131 @@
       text-decoration: underline;
     }
 
-    /* LOADING OVERLAY */
-    #loading {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(5px);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      font-size: 22px;
-      color: var(--primary);
-      font-weight: 600;
-    }
-
     /* MAIN CONTENT */
     #main-content {
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: var(--bg-light);
-      overflow: hidden;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    #main-content.active {
-      display: flex;
-      opacity: 1;
+      justify-content: flex-start;
+      min-height: 100vh;
+      position: relative;
+      padding: 80px 0;
     }
 
     #location-box {
       position: absolute;
-      top: 80px;
+      top: 20px;
       left: 20px;
-      border: 2px solid var(--primary);
+      border: 2px solid #007BFF;
       border-radius: 8px;
       padding: 10px;
-      background-color: white;
+      font-size: 16px;
+      color: #333;
+      background-color: #f9f9f9;
+      min-width: 7cm;
+      max-width: 10cm;
+      word-wrap: break-word;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     .title {
       font-size: 2.5rem;
-      color: var(--primary);
+      color: #007BFF;
       font-weight: 700;
       text-align: center;
-      margin-top: 50px;
+      margin-top: 100px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #555;
+      margin-top: 20px;
+      text-align: center;
+      max-width: 700px;
+      line-height: 1.6;
     }
 
     .feature-boxes {
       display: flex;
-      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
       margin-top: 60px;
+      gap: 40px;
+      padding: 0 20px;
     }
 
     .box {
       width: 280px;
-      height: 180px;
-      border: 3px solid var(--primary);
+      height: 200px;
+      border: 3px solid #007BFF;
       border-radius: 12px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
-      color: var(--primary);
-      background: white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: 0.3s;
+      color: #007BFF;
+      text-transform: uppercase;
       cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      background: #fff;
     }
 
-    .box:hover { transform: translateY(-10px); }
+    .box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
 
+    .box-desc {
+      font-size: 14px;
+      color: #555;
+      font-weight: normal;
+      margin-top: 8px;
+      text-transform: none;
+      text-align: center;
+      width: 80%;
+    }
+
+    /* FOOTER */
     footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: var(--primary);
+      margin-top: 80px;
+      background: #007BFF;
       color: white;
       text-align: center;
-      padding: 10px;
+      padding: 20px;
       font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      #login-box {
+        width: 80%;
+        margin: auto;
+      }
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      .feature-boxes {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
-
 <body>
-  <div class="navbar">
-    <div class="logo">🧭 Vigilent Voyager</div>
-    <a onclick="showLogin()">Login</a>
-  </div>
-
+  <!-- HERO SECTION -->
   <section class="hero" id="hero">
-    <div class="hero-content">
+    <div class="hero-content" data-aos="fade-up">
       <h1>Vigilent Voyager</h1>
       <p>Track. Discover. Stay Secure.</p>
-      <a href="javascript:void(0)" class="btn" onclick="showLogin()">Get Started</a>
+      <a href="#login-screen" class="btn" onclick="scrollToLogin()">Get Started</a>
     </div>
   </section>
 
+  <!-- LOGIN SCREEN -->
   <div id="login-screen">
-    <div id="login-box">
+    <div id="login-box" data-aos="fade-left">
       <h2 id="form-title">Login</h2>
       <input type="text" id="username" placeholder="Username" style="display:none;" />
       <input type="email" id="email" placeholder="Email" />
@@ -319,31 +296,42 @@
     </div>
   </div>
 
-  <div id="loading">Loading...</div>
-
+  <!-- MAIN CONTENT -->
   <div id="main-content">
     <div id="location-box">
       <strong>Your Location</strong><br>
       Area: <span id="area">Loading...</span><br>
       District: <span id="district">Loading...</span><br>
       State: <span id="state">Loading...</span><br>
+      <div id="datetime" style="margin-top:5px; font-size:14px; color:#007BFF;"></div>
     </div>
 
-    <div class="title">Welcome to Vigilent Voyager</div>
+    <div class="title" data-aos="fade-up">Welcome to Vigilent Voyager</div>
+    <div class="subtitle" data-aos="fade-up">
+      Plan smarter, travel safer. Vigilent Voyager helps you organize your journey with ease and confidence.
+    </div>
+
     <div class="feature-boxes">
-      <div class="box" onclick="planTrip()">🗺️ Plan My Trip</div>
-      <div class="box" onclick="safeScore()">🛡️ Safe Score</div>
+      <div class="box" data-aos="zoom-in" onclick="planTrip()">Plan My Trip<div class="box-desc">Plan your trip quickly with tailored recommendations.</div></div>
+      <div class="box" data-aos="zoom-in" onclick="safeScore()">Safe Score<div class="box-desc">Check safety ratings before visiting any destination.</div></div>
     </div>
   </div>
 
-  <footer>© 2025 Vigilent Voyager | Built with ❤️ by Mapminds</footer>
+  <footer>
+    © 2025 Vigilent Voyager | Built with ❤️ by Mapminds
+  </footer>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+  </script>
 
   <script>
     let isSignup = false;
 
-    function showLogin() {
-      document.querySelector('.hero').style.display = 'none';
-      document.getElementById('login-screen').classList.add('active');
+    function scrollToLogin() {
+      document.getElementById("login-screen").scrollIntoView({ behavior: "smooth" });
     }
 
     function toggleForm() {
@@ -355,6 +343,7 @@
 
       isSignup = !isSignup;
       error.style.display = 'none';
+
       if (isSignup) {
         title.textContent = 'Create Account';
         username.style.display = 'block';
@@ -369,13 +358,11 @@
     }
 
     function handleSubmit() {
-      const loading = document.getElementById('loading');
       const username = document.getElementById('username').value.trim();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
       const errorMsg = document.getElementById('error-message');
 
-      loading.style.display = 'flex';
       const endpoint = isSignup ? '/signup' : '/login';
       const body = isSignup ? { username, email, password } : { email, password };
 
@@ -386,22 +373,58 @@
       })
       .then(res => res.json())
       .then(data => {
-        loading.style.display = 'none';
         if (data.success) {
           document.getElementById('login-screen').style.display = 'none';
-          const main = document.getElementById('main-content');
-          main.style.display = 'flex';
-          setTimeout(() => main.classList.add('active'), 100);
+          document.getElementById('main-content').style.display = 'flex';
+          document.body.classList.add('no-scroll');
+          getAccurateLocation();
         } else {
           errorMsg.style.display = 'block';
           errorMsg.textContent = data.message || "Invalid credentials!";
         }
       })
       .catch(() => {
-        loading.style.display = 'none';
         errorMsg.style.display = 'block';
         errorMsg.textContent = "Server error!";
       });
+    }
+
+    // ✅ FREE & ACCURATE LOCATION USING NOMINATIM
+    async function getAccurateLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+
+          const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1&zoom=18&extratags=1`;
+
+          try {
+            const res = await fetch(url, {
+              headers: { 'User-Agent': 'VigilentVoyager/1.0 (vigilentvoyager@example.com)' }
+            });
+            const data = await res.json();
+
+            document.getElementById('area').textContent =
+              data.address.suburb || data.address.neighbourhood || data.address.village || "N/A";
+            document.getElementById('district').textContent =
+              data.address.city || data.address.town || data.address.county || "N/A";
+            document.getElementById('state').textContent = data.address.state || "N/A";
+          } catch (error) {
+            console.error("Location fetch error:", error);
+          }
+
+          setInterval(() => {
+            const now = new Date();
+            document.getElementById('datetime').textContent =
+              now.toLocaleDateString() + " " + now.toLocaleTimeString();
+          }, 1000);
+        },
+        (err) => {
+          alert("Please allow location access in your browser settings.");
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
     }
 
     function planTrip() { alert('Redirecting to trip planner...'); }
