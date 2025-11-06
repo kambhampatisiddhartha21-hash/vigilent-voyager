@@ -20,14 +20,13 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: hidden; /* Disable page scrolling */
+      overflow: hidden;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f5f9ff, #dfefff);
       color: #333;
     }
 
-    /* General Section Layout */
-    section, #login-screen, #main-content {
+    section, #login-screen, #main-content, #trip-options {
       position: absolute;
       top: 0;
       left: 0;
@@ -36,8 +35,9 @@
       display: none;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.5s ease;
     }
 
     .active {
@@ -70,7 +70,6 @@
       font-size: 3.5rem;
       font-weight: 700;
       margin-bottom: 20px;
-      letter-spacing: 1px;
     }
 
     .hero-content p {
@@ -79,7 +78,7 @@
       color: #f5f5f5;
     }
 
-    .hero-content .btn {
+    .btn {
       padding: 12px 28px;
       background: #00b894;
       color: white;
@@ -90,7 +89,7 @@
       transition: 0.3s ease;
     }
 
-    .hero-content .btn:hover {
+    .btn:hover {
       background: #019875;
       transform: scale(1.05);
     }
@@ -121,12 +120,6 @@
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
       text-align: center;
-      animation: slideIn 0.6s ease-out;
-    }
-
-    @keyframes slideIn {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
     }
 
     #login-box h2 {
@@ -166,7 +159,6 @@
       font-size: 14px;
       cursor: pointer;
       margin-top: 10px;
-      display: inline-block;
       text-decoration: underline;
     }
 
@@ -185,19 +177,15 @@
       border: 2px solid #007BFF;
       border-radius: 8px;
       padding: 10px;
-      font-size: 16px;
-      color: #333;
       background-color: #f9f9f9;
-      min-width: 7cm;
-      max-width: 10cm;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 15px;
     }
 
     .title {
       font-size: 2.5rem;
       color: #007BFF;
       font-weight: 700;
-      text-align: center;
       margin-top: 60px;
     }
 
@@ -205,8 +193,8 @@
       font-size: 18px;
       color: #555;
       margin-top: 20px;
-      text-align: center;
       max-width: 700px;
+      text-align: center;
       line-height: 1.6;
     }
 
@@ -231,11 +219,10 @@
       font-size: 24px;
       font-weight: bold;
       color: #007BFF;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
       background: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     .box:hover {
@@ -246,7 +233,6 @@
     .box-desc {
       font-size: 14px;
       color: #555;
-      font-weight: normal;
       margin-top: 8px;
       text-transform: none;
       text-align: center;
@@ -258,26 +244,98 @@
       color: white;
       text-align: center;
       padding: 15px;
-      font-size: 14px;
       position: absolute;
       bottom: 0;
       width: 100%;
     }
+
+    /* TRIP OPTIONS SECTION */
+    #trip-options {
+      background: linear-gradient(135deg, #f5f9ff, #dfefff);
+      justify-content: flex-start;
+      padding-top: 100px;
+      text-align: center;
+    }
+
+    .trip-container h2 {
+      color: #007BFF;
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    .trip-choice-grid, .distance-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .trip-card, .distance-card {
+      width: 200px;
+      height: 120px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #007BFF;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .trip-card:hover, .distance-card:hover {
+      transform: scale(1.05);
+    }
+
+    .active-selection {
+      background: #007BFF !important;
+      color: white !important;
+      box-shadow: 0 0 15px rgba(0, 123, 255, 0.6) !important;
+    }
+
+    #distance-container {
+      display: none;
+      margin-top: 40px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-back {
+      margin-top: 40px;
+      padding: 10px 24px;
+      background: #007BFF;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-back:hover {
+      background: #0056b3;
+    }
   </style>
 </head>
 <body>
-  <!-- HERO SECTION -->
+  <!-- HERO -->
   <section class="hero active" id="hero">
-    <div class="hero-content" data-aos="fade-up">
+    <div class="hero-content">
       <h1>Vigilent Voyager</h1>
       <p>Track. Discover. Stay Secure.</p>
       <button id="getStartedBtn" class="btn">Get Started</button>
     </div>
   </section>
 
-  <!-- LOGIN SCREEN -->
+  <!-- LOGIN -->
   <div id="login-screen">
-    <div id="login-box" data-aos="fade-left">
+    <div id="login-box">
       <h2 id="form-title">Login</h2>
       <input type="text" id="username" placeholder="Username" style="display:none;" />
       <input type="email" id="email" placeholder="Email" />
@@ -294,56 +352,73 @@
       <strong>Your Location</strong><br>
       Area: <span id="area">Loading...</span><br>
       District: <span id="district">Loading...</span><br>
-      State: <span id="state">Loading...</span><br>
-      <div id="datetime" style="margin-top:5px; font-size:14px; color:#007BFF;"></div>
+      State: <span id="state">Loading...</span>
     </div>
 
-    <div class="title" data-aos="fade-up">Welcome to Vigilent Voyager</div>
-    <div class="subtitle" data-aos="fade-up">
+    <div class="title">Welcome to Vigilent Voyager</div>
+    <div class="subtitle">
       Plan smarter, travel safer. Vigilent Voyager helps you organize your journey with ease and confidence.
     </div>
 
     <div class="feature-boxes">
-      <div class="box" data-aos="zoom-in" onclick="planTrip()">Plan My Trip<div class="box-desc">Plan your trip quickly with tailored recommendations.</div></div>
-      <div class="box" data-aos="zoom-in" onclick="safeScore()">Safe Score<div class="box-desc">Check safety ratings before visiting any destination.</div></div>
+      <div class="box" onclick="planTrip()">Plan My Trip<div class="box-desc">Plan your trip quickly with tailored recommendations.</div></div>
+      <div class="box" onclick="safeScore()">Safe Score<div class="box-desc">Check safety ratings before visiting any destination.</div></div>
     </div>
 
-    <footer>
-      © 2025 Vigilent Voyager | Built with ❤️ by Mapminds
-    </footer>
+    <footer>© 2025 Vigilent Voyager | Built with ❤️ by Mapminds</footer>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- TRIP OPTIONS -->
+  <div id="trip-options">
+    <div class="trip-container">
+      <h2>Who are you traveling with?</h2>
+      <div class="trip-choice-grid">
+        <div class="trip-card" onclick="selectTripType(this, 'Couple')">💑 Couple</div>
+        <div class="trip-card" onclick="selectTripType(this, 'Friends')">🎉 Friends</div>
+        <div class="trip-card" onclick="selectTripType(this, 'Family')">👨‍👩‍👧‍👦 Family</div>
+        <div class="trip-card" onclick="selectTripType(this, 'Business')">💼 Business</div>
+        <div class="trip-card" onclick="selectTripType(this, 'Others')">🌍 Others</div>
+      </div>
+
+      <!-- Distance Range Section -->
+      <div id="distance-container">
+        <h2>Select Distance Range (km)</h2>
+        <div class="distance-grid">
+          <div class="distance-card" onclick="selectDistance(this, 2.5)">2.5 km</div>
+          <div class="distance-card" onclick="selectDistance(this, 5)">5 km</div>
+          <div class="distance-card" onclick="selectDistance(this, 7.5)">7.5 km</div>
+          <div class="distance-card" onclick="selectDistance(this, 10)">10 km</div>
+          <div class="distance-card" onclick="selectDistance(this, 12.5)">12.5 km</div>
+          <div class="distance-card" onclick="selectDistance(this, 15)">15 km</div>
+        </div>
+      </div>
+
+      <button class="btn-back" onclick="goBackToMain()">⬅ Back</button>
+    </div>
+  </div>
+
   <script>
-    AOS.init({ duration: 800, once: true });
+    let isSignup = false;
+    let selectedTripType = null;
+    let selectedDistance = null;
 
     document.addEventListener("DOMContentLoaded", () => {
-      console.log("✅ DOM fully loaded");
-
       const hero = document.getElementById("hero");
       const login = document.getElementById("login-screen");
       const main = document.getElementById("main-content");
 
-      // Show the hero on load
       hero.classList.add("active");
 
-      // ✅ Handle Get Started click
       document.getElementById("getStartedBtn").addEventListener("click", () => {
-        console.log("➡️ Get Started clicked");
         hero.classList.remove("active");
         hero.style.display = "none";
         login.classList.add("active");
       });
 
-      // ✅ Handle Login / Signup button
       document.getElementById("submitBtn").addEventListener("click", () => {
-        console.log("➡️ Login clicked");
         handleSubmit(login, main);
       });
     });
-
-    let isSignup = false;
 
     function toggleForm() {
       const title = document.getElementById('form-title');
@@ -368,7 +443,7 @@
       }
     }
 
-    async function handleSubmit(login, main) {
+    function handleSubmit(login, main) {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
       const errorMsg = document.getElementById('error-message');
@@ -382,38 +457,39 @@
       login.classList.remove('active');
       setTimeout(() => {
         main.classList.add('active');
-        getAccurateLocation();
       }, 300);
     }
 
-    async function getAccurateLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async pos => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`);
-            const data = await res.json();
-            document.getElementById('area').textContent = data.address.suburb || data.address.neighbourhood || "N/A";
-            document.getElementById('district').textContent = data.address.city || data.address.town || data.address.county || "N/A";
-            document.getElementById('state').textContent = data.address.state || "N/A";
-          } catch (error) {
-            fallbackIP();
-          }
-        }, fallbackIP);
-      } else fallbackIP();
+    function planTrip() {
+      document.getElementById('main-content').classList.remove('active');
+      document.getElementById('trip-options').classList.add('active');
     }
 
-    async function fallbackIP() {
-      const res = await fetch('https://ipapi.co/json/');
-      const data = await res.json();
-      document.getElementById('area').textContent = data.city || "N/A";
-      document.getElementById('district').textContent = data.region || "N/A";
-      document.getElementById('state').textContent = data.country_name || "N/A";
+    function selectTripType(element, type) {
+      selectedTripType = type;
+      document.querySelectorAll('.trip-card').forEach(card => card.classList.remove('active-selection'));
+      element.classList.add('active-selection');
+
+      const distanceContainer = document.getElementById('distance-container');
+      distanceContainer.style.display = 'block';
     }
 
-    function planTrip() { alert('Redirecting to trip planner...'); }
-    function safeScore() { alert('Redirecting to safety scores...'); }
+    function selectDistance(element, distance) {
+      selectedDistance = distance;
+      document.querySelectorAll('.distance-card').forEach(card => card.classList.remove('active-selection'));
+      element.classList.add('active-selection');
+
+      alert(`✅ You selected:\nType: ${selectedTripType}\nDistance: ${selectedDistance} km\n\nNext: we’ll show suggestions based on this!`);
+    }
+
+    function goBackToMain() {
+      document.getElementById('trip-options').classList.remove('active');
+      document.getElementById('main-content').classList.add('active');
+    }
+
+    function safeScore() {
+      alert('Redirecting to safety scores...');
+    }
   </script>
 </body>
 </html>
