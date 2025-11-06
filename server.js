@@ -1,69 +1,63 @@
-// server.js
-
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import session from "express-session";
 
-// Fix __dirname since we're using ES modules
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
-const PORT = 3000;
-
-// Middleware
+// ✅ Middleware
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(
   session({
-    secret: "vigilent_secret_key",
+    secret: "vigilent-secret-key",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 );
 
-// Serve static files (frontend)
-app.use(express.static(path.join(__dirname, "public")));
+// ✅ In-memory user store
+let users = [
+  { email: "kambhampatisiddhartha21@gmail.com", password: "Siddhartha@21", username: "Siddhartha" },
+];
 
-// In-memory user database
-const users = {};
-
-// --- ROUTES ---
-
-// Signup
+// ✅ Signup route
 app.post("/signup", (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    return res.json({ success: false, message: "All fields are required" });
+    return res.status(400).json({ success: false, message: "All fields are required." });
   }
 
-  if (users[email]) {
-    return res.json({ success: false, message: "Email already registered" });
+  const existingUser = users.find((u) => u.email === email);
+  if (existingUser) {
+    return res.status(400).json({ success: false, message: "User already exists!" });
   }
 
-  users[email] = { username, password };
-  console.log("✅ New user created:", users[email]);
-
-  res.json({ success: true, message: "Account created successfully!" });
+  users.push({ username, email, password });
+  console.log("✅ New user registered:", email);
+  res.json({ success: true, message: "Signup successful" });
 });
 
-// Login
+// ✅ Login route
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const user = users[email];
 
-  if (user && user.password === password) {
-    req.session.user = { email, username: user.username };
-    console.log("✅ User logged in:", user.username);
-    return res.json({ success: true, message: "Login successful" });
+  const user = users.find((u) => u.email === email && u.password === password);
+  if (!user) {
+    return res.status(401).json({ success: false, message: "Invalid email or password!" });
   }
 
-  res.json({ success: false, message: "Invalid email or password" });
+  req.session.user = user;
+  console.log("✅ User logged in:", email);
+  res.json({ success: true, message: "Login successful" });
 });
 
-// Session check
+// ✅ Session check
 app.get("/session", (req, res) => {
   if (req.session.user) {
     res.json({ loggedIn: true, user: req.session.user });
@@ -72,25 +66,18 @@ app.get("/session", (req, res) => {
   }
 });
 
-// Logout
+// ✅ Logout
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
-    res.json({ success: true, message: "Logged out successfully" });
+    res.json({ success: true });
   });
 });
 
-// Handle location data (optional from frontend)
-app.post("/location", (req, res) => {
-  console.log("📍 User location data:", req.body);
-  res.sendStatus(200);
-});
-
-// Fallback to frontend
-app.get("*", (req, res) => {
+// ✅ Serve frontend
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
-});
+// ✅ Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
