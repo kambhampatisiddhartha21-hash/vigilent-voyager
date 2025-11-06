@@ -7,7 +7,6 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
   <!-- AOS Animation Library -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
@@ -19,28 +18,40 @@
     }
 
     html, body {
-      scroll-behavior: smooth;
-      overscroll-behavior: contain;
+      width: 100%;
+      height: 100%;
+      overflow: hidden; /* Disable page scrolling */
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f5f9ff, #dfefff);
       color: #333;
-      overflow-x: hidden;
     }
 
-    body.no-scroll {
-      overflow: hidden; /* Prevent scroll when user is logged in */
+    /* General Section Layout */
+    section, #login-screen, #main-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .active {
+      display: flex !important;
+      opacity: 1 !important;
+      z-index: 10 !important;
     }
 
     /* HERO SECTION */
     .hero {
-      position: relative;
-      height: 100vh;
       background: url('./background.jpg') center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       text-align: center;
       color: white;
+      flex-direction: column;
     }
 
     .hero::before {
@@ -73,7 +84,8 @@
       background: #00b894;
       color: white;
       border-radius: 8px;
-      text-decoration: none;
+      border: none;
+      cursor: pointer;
       font-weight: 600;
       transition: 0.3s ease;
     }
@@ -83,14 +95,11 @@
       transform: scale(1.05);
     }
 
-    /* LOGIN SECTION */
+    /* LOGIN SCREEN */
     #login-screen {
       background: url('./background.jpg') no-repeat center center;
       background-size: cover;
-      min-height: 100vh;
-      display: flex;
       justify-content: flex-end;
-      align-items: center;
       position: relative;
     }
 
@@ -163,13 +172,10 @@
 
     /* MAIN CONTENT */
     #main-content {
-      display: none;
       flex-direction: column;
-      align-items: center;
+      background: linear-gradient(135deg, #f5f9ff, #dfefff);
       justify-content: flex-start;
-      min-height: 100vh;
-      position: relative;
-      padding: 80px 0;
+      padding-top: 100px;
     }
 
     #location-box {
@@ -184,7 +190,6 @@
       background-color: #f9f9f9;
       min-width: 7cm;
       max-width: 10cm;
-      word-wrap: break-word;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
@@ -193,8 +198,7 @@
       color: #007BFF;
       font-weight: 700;
       text-align: center;
-      margin-top: 100px;
-      letter-spacing: 1px;
+      margin-top: 60px;
     }
 
     .subtitle {
@@ -249,37 +253,25 @@
       width: 80%;
     }
 
-    /* FOOTER */
     footer {
-      margin-top: 80px;
       background: #007BFF;
       color: white;
       text-align: center;
-      padding: 20px;
+      padding: 15px;
       font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
-      #login-box {
-        width: 80%;
-        margin: auto;
-      }
-      .hero-content h1 {
-        font-size: 2.2rem;
-      }
-      .feature-boxes {
-        flex-direction: column;
-      }
+      position: absolute;
+      bottom: 0;
+      width: 100%;
     }
   </style>
 </head>
 <body>
   <!-- HERO SECTION -->
-  <section class="hero" id="hero">
+  <section class="hero active" id="hero">
     <div class="hero-content" data-aos="fade-up">
       <h1>Vigilent Voyager</h1>
       <p>Track. Discover. Stay Secure.</p>
-      <a href="#login-screen" class="btn" onclick="scrollToLogin()">Get Started</a>
+      <button id="getStartedBtn" class="btn">Get Started</button>
     </div>
   </section>
 
@@ -290,7 +282,7 @@
       <input type="text" id="username" placeholder="Username" style="display:none;" />
       <input type="email" id="email" placeholder="Email" />
       <input type="password" id="password" placeholder="Password" />
-      <button onclick="handleSubmit()">Login</button>
+      <button id="submitBtn">Login</button>
       <p id="error-message" style="color:red; display:none; margin-top:10px;">Invalid credentials!</p>
       <span class="toggle" onclick="toggleForm()">Don't have an account? Create one</span>
     </div>
@@ -315,29 +307,48 @@
       <div class="box" data-aos="zoom-in" onclick="planTrip()">Plan My Trip<div class="box-desc">Plan your trip quickly with tailored recommendations.</div></div>
       <div class="box" data-aos="zoom-in" onclick="safeScore()">Safe Score<div class="box-desc">Check safety ratings before visiting any destination.</div></div>
     </div>
+
+    <footer>
+      © 2025 Vigilent Voyager | Built with ❤️ by Mapminds
+    </footer>
   </div>
 
-  <footer>
-    © 2025 Vigilent Voyager | Built with ❤️ by Mapminds
-  </footer>
-
-  <!-- AOS JS -->
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 1000, once: true });
-  </script>
+    AOS.init({ duration: 800, once: true });
 
-  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("✅ DOM fully loaded");
+
+      const hero = document.getElementById("hero");
+      const login = document.getElementById("login-screen");
+      const main = document.getElementById("main-content");
+
+      // Show the hero on load
+      hero.classList.add("active");
+
+      // ✅ Handle Get Started click
+      document.getElementById("getStartedBtn").addEventListener("click", () => {
+        console.log("➡️ Get Started clicked");
+        hero.classList.remove("active");
+        hero.style.display = "none";
+        login.classList.add("active");
+      });
+
+      // ✅ Handle Login / Signup button
+      document.getElementById("submitBtn").addEventListener("click", () => {
+        console.log("➡️ Login clicked");
+        handleSubmit(login, main);
+      });
+    });
+
     let isSignup = false;
-
-    function scrollToLogin() {
-      document.getElementById("login-screen").scrollIntoView({ behavior: "smooth" });
-    }
 
     function toggleForm() {
       const title = document.getElementById('form-title');
       const username = document.getElementById('username');
-      const button = document.querySelector('#login-box button');
+      const button = document.getElementById('submitBtn');
       const toggleText = document.querySelector('.toggle');
       const error = document.getElementById('error-message');
 
@@ -357,74 +368,48 @@
       }
     }
 
-    function handleSubmit() {
-      const username = document.getElementById('username').value.trim();
+    async function handleSubmit(login, main) {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
       const errorMsg = document.getElementById('error-message');
 
-      const endpoint = isSignup ? '/signup' : '/login';
-      const body = isSignup ? { username, email, password } : { email, password };
-
-      fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          document.getElementById('login-screen').style.display = 'none';
-          document.getElementById('main-content').style.display = 'flex';
-          document.body.classList.add('no-scroll');
-          getAccurateLocation();
-        } else {
-          errorMsg.style.display = 'block';
-          errorMsg.textContent = data.message || "Invalid credentials!";
-        }
-      })
-      .catch(() => {
+      if (!email || !password) {
         errorMsg.style.display = 'block';
-        errorMsg.textContent = "Server error!";
-      });
+        errorMsg.textContent = "Please fill in all fields.";
+        return;
+      }
+
+      login.classList.remove('active');
+      setTimeout(() => {
+        main.classList.add('active');
+        getAccurateLocation();
+      }, 300);
     }
 
-    // ✅ FREE & ACCURATE LOCATION USING NOMINATIM
     async function getAccurateLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (pos) => {
+        navigator.geolocation.getCurrentPosition(async pos => {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
-
-          const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1&zoom=18&extratags=1`;
-
           try {
-            const res = await fetch(url, {
-              headers: { 'User-Agent': 'VigilentVoyager/1.0 (vigilentvoyager@example.com)' }
-            });
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`);
             const data = await res.json();
-
-            document.getElementById('area').textContent =
-              data.address.suburb || data.address.neighbourhood || data.address.village || "N/A";
-            document.getElementById('district').textContent =
-              data.address.city || data.address.town || data.address.county || "N/A";
+            document.getElementById('area').textContent = data.address.suburb || data.address.neighbourhood || "N/A";
+            document.getElementById('district').textContent = data.address.city || data.address.town || data.address.county || "N/A";
             document.getElementById('state').textContent = data.address.state || "N/A";
           } catch (error) {
-            console.error("Location fetch error:", error);
+            fallbackIP();
           }
+        }, fallbackIP);
+      } else fallbackIP();
+    }
 
-          setInterval(() => {
-            const now = new Date();
-            document.getElementById('datetime').textContent =
-              now.toLocaleDateString() + " " + now.toLocaleTimeString();
-          }, 1000);
-        },
-        (err) => {
-          alert("Please allow location access in your browser settings.");
-        });
-      } else {
-        alert("Geolocation is not supported by your browser.");
-      }
+    async function fallbackIP() {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+      document.getElementById('area').textContent = data.city || "N/A";
+      document.getElementById('district').textContent = data.region || "N/A";
+      document.getElementById('state').textContent = data.country_name || "N/A";
     }
 
     function planTrip() { alert('Redirecting to trip planner...'); }
