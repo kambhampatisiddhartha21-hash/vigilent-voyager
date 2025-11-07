@@ -4,325 +4,124 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vigilent Voyager</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- AOS Animation Library -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f5f9ff, #dfefff);
-      color: #333;
+      width:100%; height:100%;
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#f5f9ff,#dfefff);
+      color:#333;
+      overflow:hidden; /* disables scroll globally except where overridden */
     }
 
     section, #login-screen, #main-content, #trip-options {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      opacity: 0;
-      transition: opacity 0.5s ease;
+      position:absolute; top:0; left:0;
+      width:100%; height:100vh;
+      display:none;
+      flex-direction:column;
+      align-items:center; justify-content:center;
+      opacity:0; transition:opacity .5s ease;
     }
 
-    .active {
-      display: flex !important;
-      opacity: 1 !important;
-      z-index: 10 !important;
-    }
+    .active { display:flex !important; opacity:1 !important; z-index:10; }
 
-    /* HERO SECTION */
+    /* HERO */
     .hero {
-      background: url('./background.jpg') center/cover no-repeat;
-      text-align: center;
-      color: white;
-      flex-direction: column;
+      background:url('./background.jpg') center/cover no-repeat;
+      text-align:center; color:white;
     }
+    .hero::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,.55); z-index:0; }
+    .hero-content { z-index:2; }
+    .hero-content h1 { font-size:3rem; font-weight:700; margin-bottom:10px; }
+    .hero-content p { color:#f5f5f5; margin-bottom:20px; }
+    .btn { padding:12px 28px; border:none; border-radius:8px; background:#00b894; color:white; cursor:pointer; font-weight:600; }
+    .btn:hover { background:#019875; }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 0;
-    }
-
-    .hero-content {
-      z-index: 2;
-    }
-
-    .hero-content h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .hero-content p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      color: #f5f5f5;
-    }
-
-    .btn {
-      padding: 12px 28px;
-      background: #00b894;
-      color: white;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      transition: 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #019875;
-      transform: scale(1.05);
-    }
-
-    /* LOGIN SCREEN */
-    #login-screen {
-      background: url('./background.jpg') no-repeat center center;
-      background-size: cover;
-      justify-content: flex-end;
-      position: relative;
-    }
-
-    #login-screen::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: 0;
-    }
-
+    /* LOGIN */
+    #login-screen { background:url('./background.jpg') center/cover; justify-content:flex-end; position:relative; }
+    #login-screen::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,.4); z-index:0; }
     #login-box {
-      position: relative;
-      z-index: 1;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px;
-      width: 360px;
-      margin-right: 80px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-      text-align: center;
+      position:relative; z-index:2; background:rgba(255,255,255,.96);
+      padding:40px; width:360px; margin-right:60px; border-radius:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,.25); text-align:center;
     }
-
-    #login-box h2 {
-      margin-bottom: 20px;
-      font-weight: 600;
-      color: #007BFF;
-    }
-
+    #login-box h2 { color:#007BFF; margin-bottom:20px; }
     #login-box input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      width:90%; padding:10px; margin:8px 0;
+      border-radius:8px; border:1px solid #ccc;
     }
-
     #login-box button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s;
+      width:100%; padding:12px; border:none;
+      background:#007BFF; color:white; border-radius:8px;
+      font-weight:600; cursor:pointer;
     }
+    #login-box button:hover { background:#0056b3; }
+    .toggle { color:#007BFF; font-size:14px; cursor:pointer; text-decoration:underline; display:block; margin-top:8px; }
 
-    #login-box button:hover {
-      background-color: #0056b3;
-    }
-
-    .toggle {
-      color: #007BFF;
-      font-size: 14px;
-      cursor: pointer;
-      margin-top: 10px;
-      text-decoration: underline;
-    }
-
-    /* MAIN CONTENT */
+    /* MAIN */
     #main-content {
-      flex-direction: column;
-      background: linear-gradient(135deg, #f5f9ff, #dfefff);
-      justify-content: flex-start;
-      padding-top: 100px;
+      flex-direction:column;
+      justify-content:flex-start;
+      background:linear-gradient(135deg,#f5f9ff,#dfefff);
+      padding-top:80px;
     }
 
     #location-box {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      border: 2px solid #007BFF;
-      border-radius: 8px;
-      padding: 10px;
-      background-color: #f9f9f9;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      font-size: 15px;
+      position:absolute; top:20px; left:20px;
+      background:#f9f9f9; border:2px solid #007BFF;
+      border-radius:8px; padding:8px 12px;
+      box-shadow:0 4px 10px rgba(0,0,0,.1);
+      font-size:14px;
     }
 
-    .title {
-      font-size: 2.5rem;
-      color: #007BFF;
-      font-weight: 700;
-      margin-top: 60px;
-    }
+    .title { font-size:2rem; color:#007BFF; font-weight:700; margin-top:60px; text-align:center; }
+    .subtitle { color:#555; font-size:1rem; margin-top:10px; text-align:center; max-width:600px; }
 
-    .subtitle {
-      font-size: 18px;
-      color: #555;
-      margin-top: 20px;
-      max-width: 700px;
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .feature-boxes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 60px;
-      gap: 40px;
-      padding: 0 20px;
-    }
-
+    .feature-boxes { display:flex; flex-wrap:wrap; gap:40px; justify-content:center; margin-top:60px; }
     .box {
-      width: 280px;
-      height: 200px;
-      border: 3px solid #007BFF;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #007BFF;
-      background: #fff;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width:260px; height:180px; border:3px solid #007BFF; border-radius:12px;
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      color:#007BFF; background:white; font-weight:700; cursor:pointer;
+      transition:all .3s ease; box-shadow:0 4px 10px rgba(0,0,0,.1);
     }
+    .box:hover { transform:translateY(-8px); box-shadow:0 8px 20px rgba(0,0,0,.15); }
+    .box-desc { font-size:14px; color:#555; margin-top:8px; font-weight:400; text-align:center; width:80%; }
 
-    .box:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
+    footer { background:#007BFF; color:white; text-align:center; padding:10px; position:absolute; bottom:0; width:100%; }
 
-    .box-desc {
-      font-size: 14px;
-      color: #555;
-      margin-top: 8px;
-      text-transform: none;
-      text-align: center;
-      width: 80%;
-    }
-
-    footer {
-      background: #007BFF;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-    }
-
-    /* TRIP OPTIONS SECTION */
+    /* TRIP OPTIONS (scrollable) */
     #trip-options {
-      background: linear-gradient(135deg, #f5f9ff, #dfefff);
-      justify-content: flex-start;
-      padding-top: 100px;
-      text-align: center;
+      background:linear-gradient(135deg,#f5f9ff,#dfefff);
+      justify-content:flex-start; padding-top:80px;
+      overflow-y:auto; height:100vh;
     }
 
-    .trip-container h2 {
-      color: #007BFF;
-      font-size: 2rem;
-      margin-bottom: 30px;
+    .trip-container h2 { color:#007BFF; font-size:1.5rem; margin:20px 0; text-align:center; }
+    .trip-choice-grid, .distance-grid, .experience-grid {
+      display:flex; flex-wrap:wrap; justify-content:center; gap:25px;
     }
 
-    .trip-choice-grid, .distance-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px;
+    .trip-card, .distance-card, .experience-card {
+      width:200px; height:110px;
+      background:white; border-radius:12px;
+      box-shadow:0 4px 10px rgba(0,0,0,.15);
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; font-weight:600; color:#007BFF;
+      cursor:pointer; transition:all .3s ease;
     }
+    .trip-card:hover, .distance-card:hover, .experience-card:hover { transform:scale(1.05); }
+    .active-selection { background:#007BFF !important; color:white !important; box-shadow:0 0 15px rgba(0,123,255,.6) !important; }
 
-    .trip-card, .distance-card {
-      width: 200px;
-      height: 120px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 600;
-      color: #007BFF;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+    #distance-container, #experience-container { display:none; margin-top:30px; }
 
-    .trip-card:hover, .distance-card:hover {
-      transform: scale(1.05);
-    }
-
-    .active-selection {
-      background: #007BFF !important;
-      color: white !important;
-      box-shadow: 0 0 15px rgba(0, 123, 255, 0.6) !important;
-    }
-
-    #distance-container {
-      display: none;
-      margin-top: 40px;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .btn-back {
-      margin-top: 40px;
-      padding: 10px 24px;
-      background: #007BFF;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-back:hover {
-      background: #0056b3;
-    }
+    .btn-back { margin:40px 0; padding:10px 24px; background:#007BFF; border:none; border-radius:8px; color:white; cursor:pointer; }
+    .btn-back:hover { background:#0056b3; }
   </style>
 </head>
+
 <body>
   <!-- HERO -->
   <section class="hero active" id="hero">
@@ -334,20 +133,20 @@
   </section>
 
   <!-- LOGIN -->
-  <div id="login-screen">
+  <section id="login-screen">
     <div id="login-box">
       <h2 id="form-title">Login</h2>
-      <input type="text" id="username" placeholder="Username" style="display:none;" />
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
+      <input type="text" id="username" placeholder="Username" style="display:none;">
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
       <button id="submitBtn">Login</button>
-      <p id="error-message" style="color:red; display:none; margin-top:10px;">Invalid credentials!</p>
+      <p id="error-message" style="color:red; display:none; margin-top:8px;"></p>
       <span class="toggle" onclick="toggleForm()">Don't have an account? Create one</span>
     </div>
-  </div>
+  </section>
 
   <!-- MAIN CONTENT -->
-  <div id="main-content">
+  <section id="main-content">
     <div id="location-box">
       <strong>Your Location</strong><br>
       Area: <span id="area">Loading...</span><br>
@@ -356,140 +155,163 @@
     </div>
 
     <div class="title">Welcome to Vigilent Voyager</div>
-    <div class="subtitle">
-      Plan smarter, travel safer. Vigilent Voyager helps you organize your journey with ease and confidence.
-    </div>
+    <div class="subtitle">Plan smarter, travel safer. Vigilent Voyager helps you organize your journey with ease and confidence.</div>
 
     <div class="feature-boxes">
-      <div class="box" onclick="planTrip()">Plan My Trip<div class="box-desc">Plan your trip quickly with tailored recommendations.</div></div>
-      <div class="box" onclick="safeScore()">Safe Score<div class="box-desc">Check safety ratings before visiting any destination.</div></div>
+      <div class="box" onclick="planTrip()">
+        Plan My Trip
+        <div class="box-desc">Plan your trip quickly with tailored recommendations.</div>
+      </div>
+      <div class="box" onclick="safeScore()">
+        Safe Score
+        <div class="box-desc">Check safety ratings before visiting any destination.</div>
+      </div>
     </div>
-
     <footer>© 2025 Vigilent Voyager | Built with ❤️ by Mapminds</footer>
-  </div>
+  </section>
 
   <!-- TRIP OPTIONS -->
-  <div id="trip-options">
+  <section id="trip-options">
     <div class="trip-container">
       <h2>Who are you traveling with?</h2>
       <div class="trip-choice-grid">
-        <div class="trip-card" onclick="selectTripType(this, 'Couple')">💑 Couple</div>
-        <div class="trip-card" onclick="selectTripType(this, 'Friends')">🎉 Friends</div>
-        <div class="trip-card" onclick="selectTripType(this, 'Family')">👨‍👩‍👧‍👦 Family</div>
-        <div class="trip-card" onclick="selectTripType(this, 'Business')">💼 Business</div>
-        <div class="trip-card" onclick="selectTripType(this, 'Others')">🌍 Others</div>
+        <div class="trip-card" onclick="selectTripType(this,'Couple')">💑 Couple</div>
+        <div class="trip-card" onclick="selectTripType(this,'Friends')">🎉 Friends</div>
+        <div class="trip-card" onclick="selectTripType(this,'Family')">👨‍👩‍👧‍👦 Family</div>
+        <div class="trip-card" onclick="selectTripType(this,'Business')">💼 Business</div>
+        <div class="trip-card" onclick="selectTripType(this,'Others')">🌍 Others</div>
       </div>
 
-      <!-- Distance Range Section -->
       <div id="distance-container">
         <h2>Select Distance Range (km)</h2>
         <div class="distance-grid">
-          <div class="distance-card" onclick="selectDistance(this, 2.5)">2.5 km</div>
-          <div class="distance-card" onclick="selectDistance(this, 5)">5 km</div>
-          <div class="distance-card" onclick="selectDistance(this, 7.5)">7.5 km</div>
-          <div class="distance-card" onclick="selectDistance(this, 10)">10 km</div>
-          <div class="distance-card" onclick="selectDistance(this, 12.5)">12.5 km</div>
-          <div class="distance-card" onclick="selectDistance(this, 15)">15 km</div>
+          <div class="distance-card" onclick="selectDistance(this,2.5)">2.5 km</div>
+          <div class="distance-card" onclick="selectDistance(this,5)">5 km</div>
+          <div class="distance-card" onclick="selectDistance(this,7.5)">7.5 km</div>
+          <div class="distance-card" onclick="selectDistance(this,10)">10 km</div>
+          <div class="distance-card" onclick="selectDistance(this,12.5)">12.5 km</div>
+          <div class="distance-card" onclick="selectDistance(this,15)">15 km</div>
+        </div>
+      </div>
+
+      <div id="experience-container">
+        <h2>Select Your Experience Type</h2>
+        <div class="experience-grid">
+          <div class="experience-card" onclick="selectExperience(this,'Adventure')">🏕 Adventure</div>
+          <div class="experience-card" onclick="selectExperience(this,'Exploring')">🧭 Exploring</div>
+          <div class="experience-card" onclick="selectExperience(this,'Devotional')">🙏 Devotional</div>
+          <div class="experience-card" onclick="selectExperience(this,'Historical')">🏛 Historical</div>
+          <div class="experience-card" onclick="selectExperience(this,'Professional')">💼 Professional</div>
+          <div class="experience-card" onclick="selectExperience(this,'Nature')">🌿 Nature</div>
         </div>
       </div>
 
       <button class="btn-back" onclick="goBackToMain()">⬅ Back</button>
     </div>
-  </div>
+  </section>
 
   <script>
     let isSignup = false;
     let selectedTripType = null;
     let selectedDistance = null;
+    let selectedExperience = null;
 
     document.addEventListener("DOMContentLoaded", () => {
-      const hero = document.getElementById("hero");
-      const login = document.getElementById("login-screen");
-      const main = document.getElementById("main-content");
-
-      hero.classList.add("active");
-
       document.getElementById("getStartedBtn").addEventListener("click", () => {
-        hero.classList.remove("active");
-        hero.style.display = "none";
-        login.classList.add("active");
+        showPage("login-screen");
       });
-
-      document.getElementById("submitBtn").addEventListener("click", () => {
-        handleSubmit(login, main);
-      });
+      document.getElementById("submitBtn").addEventListener("click", handleAuth);
     });
 
+    function showPage(id) {
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      if (id === "trip-options") document.body.style.overflow = "auto";
+      else document.body.style.overflow = "hidden";
+    }
+
     function toggleForm() {
-      const title = document.getElementById('form-title');
-      const username = document.getElementById('username');
-      const button = document.getElementById('submitBtn');
-      const toggleText = document.querySelector('.toggle');
-      const error = document.getElementById('error-message');
+      const title = document.getElementById("form-title");
+      const username = document.getElementById("username");
+      const button = document.getElementById("submitBtn");
+      const toggleText = document.querySelector(".toggle");
+      const error = document.getElementById("error-message");
+      error.style.display = "none";
 
       isSignup = !isSignup;
-      error.style.display = 'none';
 
       if (isSignup) {
-        title.textContent = 'Create Account';
-        username.style.display = 'block';
-        button.textContent = 'Sign Up';
-        toggleText.textContent = 'Already have an account? Login';
+        title.textContent = "Create Account";
+        username.style.display = "block";
+        button.textContent = "Sign Up";
+        toggleText.textContent = "Already have an account? Login";
       } else {
-        title.textContent = 'Login';
-        username.style.display = 'none';
-        button.textContent = 'Login';
+        title.textContent = "Login";
+        username.style.display = "none";
+        button.textContent = "Login";
         toggleText.textContent = "Don't have an account? Create one";
       }
     }
 
-    function handleSubmit(login, main) {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const errorMsg = document.getElementById('error-message');
+    function handleAuth() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const errorMsg = document.getElementById("error-message");
 
-      if (!email || !password) {
-        errorMsg.style.display = 'block';
-        errorMsg.textContent = "Please fill in all fields.";
-        return;
+      let users = JSON.parse(localStorage.getItem("vv_users") || "[]");
+
+      if (isSignup) {
+        if (!username || !email || !password) {
+          errorMsg.textContent = "Please fill all fields.";
+          errorMsg.style.display = "block";
+          return;
+        }
+        if (users.some(u => u.email === email)) {
+          errorMsg.textContent = "User already exists!";
+          errorMsg.style.display = "block";
+          return;
+        }
+        users.push({ username, email, password });
+        localStorage.setItem("vv_users", JSON.stringify(users));
+        alert("✅ Account created! Please log in.");
+        toggleForm();
+      } else {
+        const user = users.find(u => u.email === email && u.password === password);
+        if (!user) {
+          errorMsg.textContent = "Invalid credentials!";
+          errorMsg.style.display = "block";
+          return;
+        }
+        showPage("main-content");
       }
-
-      login.classList.remove('active');
-      setTimeout(() => {
-        main.classList.add('active');
-      }, 300);
     }
 
-    function planTrip() {
-      document.getElementById('main-content').classList.remove('active');
-      document.getElementById('trip-options').classList.add('active');
-    }
+    function planTrip() { showPage("trip-options"); }
 
-    function selectTripType(element, type) {
+    function selectTripType(el, type) {
       selectedTripType = type;
-      document.querySelectorAll('.trip-card').forEach(card => card.classList.remove('active-selection'));
-      element.classList.add('active-selection');
-
-      const distanceContainer = document.getElementById('distance-container');
-      distanceContainer.style.display = 'block';
+      document.querySelectorAll(".trip-card").forEach(c => c.classList.remove("active-selection"));
+      el.classList.add("active-selection");
+      document.getElementById("distance-container").style.display = "block";
     }
 
-    function selectDistance(element, distance) {
+    function selectDistance(el, distance) {
       selectedDistance = distance;
-      document.querySelectorAll('.distance-card').forEach(card => card.classList.remove('active-selection'));
-      element.classList.add('active-selection');
-
-      alert(`✅ You selected:\nType: ${selectedTripType}\nDistance: ${selectedDistance} km\n\nNext: we’ll show suggestions based on this!`);
+      document.querySelectorAll(".distance-card").forEach(c => c.classList.remove("active-selection"));
+      el.classList.add("active-selection");
+      document.getElementById("experience-container").style.display = "block";
     }
 
-    function goBackToMain() {
-      document.getElementById('trip-options').classList.remove('active');
-      document.getElementById('main-content').classList.add('active');
+    function selectExperience(el, exp) {
+      selectedExperience = exp;
+      document.querySelectorAll(".experience-card").forEach(c => c.classList.remove("active-selection"));
+      el.classList.add("active-selection");
+      alert(`✅ Trip Planned:\nType: ${selectedTripType}\nDistance: ${selectedDistance} km\nExperience: ${selectedExperience}`);
     }
 
-    function safeScore() {
-      alert('Redirecting to safety scores...');
-    }
+    function goBackToMain() { showPage("main-content"); }
+    function safeScore() { alert("Safe score feature coming soon!"); }
   </script>
 </body>
 </html>
