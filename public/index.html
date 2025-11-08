@@ -1,153 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vigilent Voyager</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-
-    html, body {
-      width:100%; height:100%;
-      font-family:'Poppins',sans-serif;
-      background:linear-gradient(135deg,#f5f9ff,#dfefff);
-      color:#333;
-      overflow:hidden; /* disables scroll globally except where overridden */
-    }
-
-    section, #login-screen, #main-content, #trip-options {
-      position:absolute; top:0; left:0;
-      width:100%; height:100vh;
-      display:none;
-      flex-direction:column;
-      align-items:center; justify-content:center;
-      opacity:0; transition:opacity .5s ease;
-    }
-
-    .active { display:flex !important; opacity:1 !important; z-index:10; }
-
-    /* HERO */
-    .hero {
-      background:url('./background.jpg') center/cover no-repeat;
-      text-align:center; color:white;
-    }
-    .hero::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,.55); z-index:0; }
-    .hero-content { z-index:2; }
-    .hero-content h1 { font-size:3rem; font-weight:700; margin-bottom:10px; }
-    .hero-content p { color:#f5f5f5; margin-bottom:20px; }
-    .btn { padding:12px 28px; border:none; border-radius:8px; background:#00b894; color:white; cursor:pointer; font-weight:600; }
-    .btn:hover { background:#019875; }
-
-    /* LOGIN */
-    #login-screen { background:url('./background.jpg') center/cover; justify-content:flex-end; position:relative; }
-    #login-screen::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,.4); z-index:0; }
-    #login-box {
-      position:relative; z-index:2; background:rgba(255,255,255,.96);
-      padding:40px; width:360px; margin-right:60px; border-radius:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,.25); text-align:center;
-    }
-    #login-box h2 { color:#007BFF; margin-bottom:20px; }
-    #login-box input {
-      width:90%; padding:10px; margin:8px 0;
-      border-radius:8px; border:1px solid #ccc;
-    }
-    #login-box button {
-      width:100%; padding:12px; border:none;
-      background:#007BFF; color:white; border-radius:8px;
-      font-weight:600; cursor:pointer;
-    }
-    #login-box button:hover { background:#0056b3; }
-    .toggle { color:#007BFF; font-size:14px; cursor:pointer; text-decoration:underline; display:block; margin-top:8px; }
-
-    /* MAIN */
-    #main-content {
-      flex-direction:column;
-      justify-content:flex-start;
-      background:linear-gradient(135deg,#f5f9ff,#dfefff);
-      padding-top:80px;
-    }
-
-    #location-box {
-      position:absolute; top:20px; left:20px;
-      background:#f9f9f9; border:2px solid #007BFF;
-      border-radius:8px; padding:8px 12px;
-      box-shadow:0 4px 10px rgba(0,0,0,.1);
-      font-size:14px;
-    }
-
-    .title { font-size:2rem; color:#007BFF; font-weight:700; margin-top:60px; text-align:center; }
-    .subtitle { color:#555; font-size:1rem; margin-top:10px; text-align:center; max-width:600px; }
-
-    .feature-boxes { display:flex; flex-wrap:wrap; gap:40px; justify-content:center; margin-top:60px; }
-    .box {
-      width:260px; height:180px; border:3px solid #007BFF; border-radius:12px;
-      display:flex; flex-direction:column; justify-content:center; align-items:center;
-      color:#007BFF; background:white; font-weight:700; cursor:pointer;
-      transition:all .3s ease; box-shadow:0 4px 10px rgba(0,0,0,.1);
-    }
-    .box:hover { transform:translateY(-8px); box-shadow:0 8px 20px rgba(0,0,0,.15); }
-    .box-desc { font-size:14px; color:#555; margin-top:8px; font-weight:400; text-align:center; width:80%; }
-
-    footer { background:#007BFF; color:white; text-align:center; padding:10px; position:absolute; bottom:0; width:100%; }
-
-    /* TRIP OPTIONS (scrollable) */
-    #trip-options {
-      background:linear-gradient(135deg,#f5f9ff,#dfefff);
-      justify-content:flex-start; padding-top:80px;
-      overflow-y:auto; height:100vh;
-    }
-
-    .trip-container h2 { color:#007BFF; font-size:1.5rem; margin:20px 0; text-align:center; }
-    .trip-choice-grid, .distance-grid, .experience-grid {
-      display:flex; flex-wrap:wrap; justify-content:center; gap:25px;
-    }
-
-    .trip-card, .distance-card, .experience-card {
-      width:200px; height:110px;
-      background:white; border-radius:12px;
-      box-shadow:0 4px 10px rgba(0,0,0,.15);
-      display:flex; align-items:center; justify-content:center;
-      font-size:18px; font-weight:600; color:#007BFF;
-      cursor:pointer; transition:all .3s ease;
-    }
-    .trip-card:hover, .distance-card:hover, .experience-card:hover { transform:scale(1.05); }
-    .active-selection { background:#007BFF !important; color:white !important; box-shadow:0 0 15px rgba(0,123,255,.6) !important; }
-
-    #distance-container, #experience-container { display:none; margin-top:30px; }
-
-    .btn-back { margin:40px 0; padding:10px 24px; background:#007BFF; border:none; border-radius:8px; color:white; cursor:pointer; }
-    .btn-back:hover { background:#0056b3; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{width:100%;height:100%;font-family:"Poppins",sans-serif;background:linear-gradient(135deg,#f5f9ff,#dfefff);color:#333;overflow:hidden}
+    section{position:absolute;top:0;left:0;width:100%;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .35s ease}
+    section.active{display:flex!important;opacity:1!important;z-index:10}
+    .hero{position:relative;background:url('background.jpg') center/cover no-repeat;color:#fff;text-align:center}
+    .hero::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:1}
+    .hero-content{position:relative;z-index:2;padding:28px;border-radius:12px;background:rgba(0,0,0,0.18)}
+    .hero-content h1{font-size:2.8rem;font-weight:700;margin-bottom:8px}
+    .hero-content p{color:#f5f5f5;margin-bottom:14px}
+    .btn{padding:12px 26px;border-radius:8px;border:none;background:#00b894;color:#fff;font-weight:600;cursor:pointer}
+    .btn:hover{background:#019875}
+    #login-screen{display:flex;align-items:center;justify-content:flex-end;position:relative;background:url('background.jpg') center/cover no-repeat}
+    #login-screen::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:0}
+    #login-box{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:2;background:rgba(255,255,255,.98);padding:28px;width:360px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);text-align:center}
+    #login-box h2{color:#007BFF;margin-bottom:12px}
+    #login-box input{width:92%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
+    #login-box button{width:100%;padding:12px;border:none;border-radius:8px;background:#007BFF;color:#fff;font-weight:600;cursor:pointer}
+    #login-box button:hover{background:#0056b3}
+    .toggle{display:block;margin-top:10px;color:#007BFF;cursor:pointer;text-decoration:underline;font-size:13px}
+    #error-message{color:#c0392b;margin-top:8px;display:none;font-size:13px}
+    #main-content{flex-direction:column;justify-content:flex-start;padding-top:86px}
+    #location-box{position:absolute;top:18px;left:18px;background:#f9f9f9;border:2px solid #007BFF;padding:10px 12px;border-radius:8px;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+    .title{font-size:2rem;color:#007BFF;font-weight:700;margin-top:36px;text-align:center}
+    #greeting{margin-top:18px;font-size:1.4rem;font-weight:700;text-align:center;background:linear-gradient(90deg,#007BFF,#00b894);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .subtitle{color:#555;margin-top:12px;text-align:center;max-width:760px}
+    .feature-boxes{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin-top:44px}
+    .box{width:260px;height:170px;border:3px solid #007BFF;border-radius:12px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#fff;color:#007BFF;font-weight:700;cursor:pointer;transition:all .25s ease;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .box:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.09)}
+    .box-desc{font-size:14px;color:#555;margin-top:10px;font-weight:400;text-align:center;width:80%}
+    footer{position:absolute;bottom:0;width:100%;background:#007BFF;color:#fff;text-align:center;padding:12px}
+    #trip-options{padding-top:70px;overflow-y:auto;align-items:flex-start}
+    .trip-container{width:100%;padding:36px 20px 80px;display:flex;flex-direction:column;align-items:center}
+    .trip-container h2{color:#007BFF;font-size:1.8rem;margin-bottom:14px}
+    .trip-choice-grid,.distance-grid,.experience-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+    .trip-card,.distance-card,.experience-card{width:200px;height:110px;background:#fff;border-radius:12px;border:2px solid #007BFF;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#007BFF;cursor:pointer;transition:all .25s ease;box-shadow:0 6px 16px rgba(0,0,0,0.06)}
+    .trip-card:hover,.distance-card:hover,.experience-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,0.09)}
+    .active-selection{background:#007BFF!important;color:#fff!important;box-shadow:0 0 18px rgba(0,123,255,0.45)!important}
+    #distance-container,#experience-container{display:none;margin-top:20px;width:100%;max-width:980px}
+    .btn-back{margin-top:30px;padding:10px 20px;border:none;border-radius:8px;background:#007BFF;color:white;cursor:pointer;font-weight:600}
+    .btn-back:hover{background:#0056b3}
+    #results-page{background:linear-gradient(135deg,#f5f9ff,#e8f3ff);justify-content:flex-start;padding-top:80px;overflow-y:auto}
+    .results-grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:20px;padding-bottom:80px}
+    .result-card{width:280px;border-radius:12px;background:white;box-shadow:0 6px 18px rgba(0,0,0,.08);overflow:hidden;transition:transform .25s}
+    .result-card:hover{transform:translateY(-6px)}
+    .result-card img{width:100%;height:160px;object-fit:cover}
+    .result-info{padding:12px;text-align:center}
+    .result-info h3{color:#007BFF;font-size:1.05rem;margin-bottom:6px}
+    .result-info p{font-size:0.9rem;color:#555;margin:4px 0}
+    #safe-score-section{background:linear-gradient(135deg,#f5f9ff,#dfefff);justify-content:flex-start;padding-top:80px;display:none;flex-direction:column;align-items:center;opacity:0;transition:opacity .45s ease}
+    #safe-score-section.active{display:flex!important;opacity:1!important}
+    .safe-container{width:90%;max-width:900px;text-align:center;margin-bottom:50px}
+    .safe-container h2{color:#007BFF;font-size:2rem;font-weight:700}
+    .safe-desc{color:#555;margin-bottom:22px}
+    .score-card-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:20px}
+    .score-card{width:260px;height:160px;background:#fff;border-radius:12px;border:3px solid #007BFF;box-shadow:0 4px 10px rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .25s ease}
+    .score-value{font-size:2rem;font-weight:700;color:#00b894}
+    .score-label{color:#555;font-size:.95rem}
+    .overall-score{margin-top:30px;font-size:1.3rem;font-weight:700;color:#007BFF;background:#fff;padding:12px 20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+    .btn-safe-back{margin-top:20px;padding:10px 20px;border-radius:8px;border:none;background:#007BFF;color:#fff;cursor:pointer}
+    .btn-safe-back:hover{background:#0056b3}
+    @media (max-width:720px){#login-box{right:4%;width:320px}.trip-card,.distance-card,.experience-card{width:160px;height:100px;font-size:16px}.box{width:220px;height:150px}.result-card{width:90%}}
   </style>
 </head>
-
 <body>
   <!-- HERO -->
-  <section class="hero active" id="hero">
+  <section id="hero" class="active hero" aria-label="Hero">
     <div class="hero-content">
       <h1>Vigilent Voyager</h1>
       <p>Track. Discover. Stay Secure.</p>
-      <button id="getStartedBtn" class="btn">Get Started</button>
+      <button id="getStartedBtn" class="btn" type="button">Get Started</button>
     </div>
   </section>
 
   <!-- LOGIN -->
-  <section id="login-screen">
-    <div id="login-box">
+  <section id="login-screen" aria-hidden="true">
+    <div id="login-box" role="form" aria-label="Login form">
       <h2 id="form-title">Login</h2>
-      <input type="text" id="username" placeholder="Username" style="display:none;">
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <button id="submitBtn">Login</button>
-      <p id="error-message" style="color:red; display:none; margin-top:8px;"></p>
-      <span class="toggle" onclick="toggleForm()">Don't have an account? Create one</span>
+      <input id="username" type="text" placeholder="Username (for signup)" style="display:none" />
+      <input id="email" type="email" placeholder="Email" />
+      <input id="password" type="password" placeholder="Password" />
+      <button id="submitBtn" type="button">Login</button>
+      <div id="error-message" role="alert" aria-live="polite"></div>
+      <span class="toggle" id="toggleFormBtn" role="button" tabindex="0">Don't have an account? Create one</span>
     </div>
   </section>
 
-  <!-- MAIN CONTENT -->
-  <section id="main-content">
-    <div id="location-box">
+  <!-- MAIN -->
+  <section id="main-content" aria-hidden="true">
+    <div id="location-box" aria-live="polite">
       <strong>Your Location</strong><br>
       Area: <span id="area">Loading...</span><br>
       District: <span id="district">Loading...</span><br>
@@ -155,163 +102,404 @@
     </div>
 
     <div class="title">Welcome to Vigilent Voyager</div>
+    <div id="greeting">Plan smarter, travel safer.</div>
     <div class="subtitle">Plan smarter, travel safer. Vigilent Voyager helps you organize your journey with ease and confidence.</div>
 
-    <div class="feature-boxes">
-      <div class="box" onclick="planTrip()">
-        Plan My Trip
+    <div class="feature-boxes" role="navigation" aria-label="Main features">
+      <div class="box" id="planTripBtn" role="button" tabindex="0">Plan My Trip
         <div class="box-desc">Plan your trip quickly with tailored recommendations.</div>
       </div>
-      <div class="box" onclick="safeScore()">
-        Safe Score
+
+      <div class="box" id="safeScoreBtn" role="button" tabindex="0">Safe Score
         <div class="box-desc">Check safety ratings before visiting any destination.</div>
       </div>
     </div>
+
     <footer>© 2025 Vigilent Voyager | Built with ❤️ by Mapminds</footer>
   </section>
 
   <!-- TRIP OPTIONS -->
-  <section id="trip-options">
+  <section id="trip-options" aria-hidden="true">
     <div class="trip-container">
       <h2>Who are you traveling with?</h2>
-      <div class="trip-choice-grid">
-        <div class="trip-card" onclick="selectTripType(this,'Couple')">💑 Couple</div>
-        <div class="trip-card" onclick="selectTripType(this,'Friends')">🎉 Friends</div>
-        <div class="trip-card" onclick="selectTripType(this,'Family')">👨‍👩‍👧‍👦 Family</div>
-        <div class="trip-card" onclick="selectTripType(this,'Business')">💼 Business</div>
-        <div class="trip-card" onclick="selectTripType(this,'Others')">🌍 Others</div>
+      <div class="trip-choice-grid" id="tripChoiceGrid">
+        <div class="trip-card" data-type="Couple" role="button" tabindex="0">💑 Couple</div>
+        <div class="trip-card" data-type="Friends" role="button" tabindex="0">🎉 Friends</div>
+        <div class="trip-card" data-type="Family" role="button" tabindex="0">👨‍👩‍👧‍👦 Family</div>
+        <div class="trip-card" data-type="Business" role="button" tabindex="0">💼 Business</div>
+        <div class="trip-card" data-type="Others" role="button" tabindex="0">🌍 Others</div>
       </div>
 
       <div id="distance-container">
         <h2>Select Distance Range (km)</h2>
         <div class="distance-grid">
-          <div class="distance-card" onclick="selectDistance(this,2.5)">2.5 km</div>
-          <div class="distance-card" onclick="selectDistance(this,5)">5 km</div>
-          <div class="distance-card" onclick="selectDistance(this,7.5)">7.5 km</div>
-          <div class="distance-card" onclick="selectDistance(this,10)">10 km</div>
-          <div class="distance-card" onclick="selectDistance(this,12.5)">12.5 km</div>
-          <div class="distance-card" onclick="selectDistance(this,15)">15 km</div>
+          <div class="distance-card" data-distance="2.5" role="button" tabindex="0">2.5 km</div>
+          <div class="distance-card" data-distance="5" role="button" tabindex="0">5 km</div>
+          <div class="distance-card" data-distance="7.5" role="button" tabindex="0">7.5 km</div>
+          <div class="distance-card" data-distance="10" role="button" tabindex="0">10 km</div>
+          <div class="distance-card" data-distance="12.5" role="button" tabindex="0">12.5 km</div>
+          <div class="distance-card" data-distance="15" role="button" tabindex="0">15 km</div>
         </div>
       </div>
 
       <div id="experience-container">
         <h2>Select Your Experience Type</h2>
         <div class="experience-grid">
-          <div class="experience-card" onclick="selectExperience(this,'Adventure')">🏕 Adventure</div>
-          <div class="experience-card" onclick="selectExperience(this,'Exploring')">🧭 Exploring</div>
-          <div class="experience-card" onclick="selectExperience(this,'Devotional')">🙏 Devotional</div>
-          <div class="experience-card" onclick="selectExperience(this,'Historical')">🏛 Historical</div>
-          <div class="experience-card" onclick="selectExperience(this,'Professional')">💼 Professional</div>
-          <div class="experience-card" onclick="selectExperience(this,'Nature')">🌿 Nature</div>
+          <div class="experience-card" data-exp="Adventure" role="button" tabindex="0">🏕 Adventure</div>
+          <div class="experience-card" data-exp="Nature" role="button" tabindex="0">🌿 Nature</div>
+          <div class="experience-card" data-exp="Devotional" role="button" tabindex="0">🙏 Devotional</div>
+          <div class="experience-card" data-exp="Historical" role="button" tabindex="0">🏛 Historical</div>
+          <div class="experience-card" data-exp="Professional" role="button" tabindex="0">💼 Professional</div>
+          <div class="experience-card" data-exp="Exploring" role="button" tabindex="0">🧭 Exploring</div>
         </div>
       </div>
 
-      <button class="btn-back" onclick="goBackToMain()">⬅ Back</button>
+      <button class="btn-back" id="tripBackBtn" type="button">⬅ Back</button>
+    </div>
+  </section>
+
+  <!-- TRIP RESULTS -->
+  <section id="results-page" aria-hidden="true">
+    <div class="trip-container">
+      <h2 id="results-title">Suggested Places</h2>
+      <div id="resultsGrid" class="results-grid"></div>
+      <button class="btn-back" type="button" onclick="showPage('trip-options')">⬅ Back</button>
+    </div>
+  </section>
+
+  <!-- SAFE SCORE -->
+  <section id="safe-score-section" aria-hidden="true">
+    <div class="safe-container">
+      <h2>🔒 Area Safety Analysis</h2>
+      <p class="safe-desc">Analyzing local safety data based on your current location...</p>
+
+      <div class="score-card-grid">
+        <div class="score-card" id="harassmentScore">
+          <h3>🚨 Harassment Risk</h3>
+          <p class="score-value">--</p>
+          <p class="score-label">Analyzing...</p>
+        </div>
+
+        <div class="score-card" id="theftScore">
+          <h3>🕵 Theft Risk</h3>
+          <p class="score-value">--</p>
+          <p class="score-label">Analyzing...</p>
+        </div>
+
+        <div class="score-card" id="policeScore">
+          <h3>👮 Police Response</h3>
+          <p class="score-value">--</p>
+          <p class="score-label">Analyzing...</p>
+        </div>
+      </div>
+
+      <div id="overallSafeScore" class="overall-score">Overall Safe Score: --</div>
+
+      <button class="btn-safe-back" id="safeBackBtn" type="button">⬅ Back</button>
     </div>
   </section>
 
   <script>
+    // ---------- state ----------
     let isSignup = false;
     let selectedTripType = null;
     let selectedDistance = null;
     let selectedExperience = null;
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("getStartedBtn").addEventListener("click", () => {
-        showPage("login-screen");
-      });
-      document.getElementById("submitBtn").addEventListener("click", handleAuth);
+    // ---------- dataset ----------
+    const PLACES = {
+      "Couple": {
+        "Adventure": [
+          {name:"Durgam Cheruvu Boating", type:"Lake Adventure", distance:3.1, img:"https://i.imgur.com/TSG68HR.jpg"},
+          {name:"Sky Zone Hyderabad", type:"Trampoline Park", distance:8.0, img:"https://i.imgur.com/v6zZ6RG.jpg"}
+        ],
+        "Nature": [
+          {name:"Botanical Garden Hyderabad", type:"Nature Park", distance:7.0, img:"https://i.imgur.com/l2bTRSC.jpg"},
+          {name:"Durgam Cheruvu Lake Walk", type:"Scenic View", distance:3.1, img:"https://i.imgur.com/KC31x4W.jpg"}
+        ],
+        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
+        "Historical": [{name:"Golconda Fort", type:"Fort", distance:13.0, img:"https://i.imgur.com/W8X1YZf.jpg"}],
+        "Professional": [{name:"The Gallery Cafe Hyderabad", type:"Cafe Workspace", distance:4.2, img:"https://i.imgur.com/AXYFqfJ.jpg"}],
+        "Exploring": [{name:"Shilparamam Crafts Village", type:"Cultural Market", distance:3.5, img:"https://i.imgur.com/4vQh0mM.jpg"}]
+      },
+      "Friends": {
+        "Adventure": [
+          {name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"https://i.imgur.com/v6zZ6RG.jpg"},
+          {name:"LaserMaxx Hyderabad", type:"Laser Tag Arena", distance:6.5, img:"https://i.imgur.com/zZZ2r5S.jpg"}
+        ],
+        "Nature": [{name:"Durgam Cheruvu Lake", type:"Scenic Spot", distance:3.1, img:"https://i.imgur.com/KC31x4W.jpg"}],
+        "Devotional": [{name:"ISKCON Temple Hyderabad", type:"Temple", distance:10.5, img:"https://i.imgur.com/7N5R8Ge.jpg"}],
+        "Historical": [{name:"Golconda Fort", type:"Historic Fort", distance:13.0, img:"https://i.imgur.com/W8X1YZf.jpg"}],
+        "Professional": [{name:"T-Hub Hyderabad", type:"Innovation Hub", distance:2.5, img:"https://i.imgur.com/NMdB2dG.jpg"}],
+        "Exploring": [{name:"Shilparamam", type:"Cultural Spot", distance:3.5, img:"https://i.imgur.com/4vQh0mM.jpg"}]
+      },
+      "Family": {
+        "Adventure": [{name:"PlayMax Game Arena", type:"Indoor Games", distance:4.9, img:"https://i.imgur.com/HPOgN4R.jpg"}],
+        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"https://i.imgur.com/l2bTRSC.jpg"}],
+        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
+        "Historical": [{name:"Salar Jung Museum", type:"Museum", distance:15.0, img:"https://i.imgur.com/tRr1qSa.jpg"}],
+        "Professional": [{name:"Minerva Coffee Shop", type:"Restaurant", distance:5.5, img:"https://i.imgur.com/J6hrEpD.jpg"}],
+        "Exploring": [{name:"Inorbit Mall Hyderabad", type:"Shopping & Food", distance:5.2, img:"https://i.imgur.com/J6hrEpD.jpg"}]
+      },
+      "Business": {
+        "Adventure": [{name:"Corporate Team Outing Arena Hyderabad", type:"Team Activity", distance:9.0, img:"https://i.imgur.com/0L9HzZc.jpg"}],
+        "Nature": [{name:"Durgam Cheruvu", type:"Scenic View", distance:3.1, img:"https://i.imgur.com/KC31x4W.jpg"}],
+        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.8, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
+        "Historical": [{name:"Cyber Towers", type:"Landmark Building", distance:2.5, img:"https://i.imgur.com/xH8OGcd.jpg"}],
+        "Professional": [
+          {name:"WeWork Krishe Emerald", type:"Co-working Space", distance:1.8, img:"https://i.imgur.com/jcQ4cvY.jpg"},
+          {name:"Collab House Hyderabad", type:"Workspace", distance:5.7, img:"https://i.imgur.com/0L9HzZc.jpg"}
+        ],
+        "Exploring": [{name:"Mindspace IT Park", type:"Business Hub", distance:4.0, img:"https://i.imgur.com/sv8Phzi.jpg"}]
+      },
+      "Others": {
+        "Adventure": [{name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"https://i.imgur.com/v6zZ6RG.jpg"}],
+        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"https://i.imgur.com/l2bTRSC.jpg"}],
+        "Devotional": [{name:"Local Shrine", type:"Temple", distance:3.0, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
+        "Historical": [{name:"Golconda Fort", type:"Historic", distance:13.0, img:"https://i.imgur.com/W8X1YZf.jpg"}],
+        "Professional": [{name:"Co-work Cafe", type:"Workspace", distance:5.0, img:"https://i.imgur.com/BvUuq4h.jpg"}],
+        "Exploring": [{name:"Shilparamam", type:"Village/Market", distance:3.5, img:"https://i.imgur.com/4vQh0mM.jpg"}]
+      }
+    };
+
+    // ---------- boot ----------
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('getStartedBtn').addEventListener('click', () => showPage('login-screen'));
+      document.getElementById('toggleFormBtn').addEventListener('click', toggleForm);
+      document.getElementById('submitBtn').addEventListener('click', handleAuth);
+      document.getElementById('planTripBtn').addEventListener('click', () => showPage('trip-options'));
+      document.getElementById('safeScoreBtn').addEventListener('click', safeScore);
+      document.getElementById('tripBackBtn').addEventListener('click', () => showPage('main-content'));
+      document.getElementById('safeBackBtn').addEventListener('click', () => showPage('main-content'));
+
+      document.querySelectorAll('.trip-card').forEach(el => { el.addEventListener('click', () => selectTripType(el, el.dataset.type)); });
+      document.querySelectorAll('.distance-card').forEach(el => { el.addEventListener('click', () => selectDistance(el, parseFloat(el.dataset.distance))); });
+      document.querySelectorAll('.experience-card').forEach(el => { el.addEventListener('click', () => selectExperience(el, el.dataset.exp)); });
+
+      // greet if saved
+      const stored = localStorage.getItem('voyagerUsername');
+      if (stored) {
+        document.getElementById('greeting').textContent = `👋 Hi, ${stored}! Welcome back to Vigilent Voyager 🚀`;
+        getAccurateLocation();
+      } else {
+        document.getElementById('greeting').textContent = 'Plan smarter, travel safer.';
+      }
+
+      showPage('hero');
     });
 
+    // ---------- navigation ----------
     function showPage(id) {
-      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      if (id === "trip-options") document.body.style.overflow = "auto";
-      else document.body.style.overflow = "hidden";
+      document.querySelectorAll('section').forEach(s => { s.classList.remove('active'); s.setAttribute('aria-hidden','true'); });
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      sec.classList.add('active');
+      sec.setAttribute('aria-hidden','false');
+      // allow scroll on long pages only
+      if (id === 'trip-options' || id === 'results-page' || id === 'safe-score-section') document.body.style.overflow = 'auto';
+      else document.body.style.overflow = 'hidden';
     }
 
+    // ---------- auth ----------
     function toggleForm() {
-      const title = document.getElementById("form-title");
-      const username = document.getElementById("username");
-      const button = document.getElementById("submitBtn");
-      const toggleText = document.querySelector(".toggle");
-      const error = document.getElementById("error-message");
-      error.style.display = "none";
-
       isSignup = !isSignup;
-
+      const title = document.getElementById('form-title');
+      const username = document.getElementById('username');
+      const submitBtn = document.getElementById('submitBtn');
+      const toggleText = document.getElementById('toggleFormBtn');
+      document.getElementById('error-message').style.display = 'none';
       if (isSignup) {
-        title.textContent = "Create Account";
-        username.style.display = "block";
-        button.textContent = "Sign Up";
-        toggleText.textContent = "Already have an account? Login";
+        title.textContent = 'Create Account';
+        username.style.display = 'block';
+        submitBtn.textContent = 'Sign Up';
+        toggleText.textContent = 'Already have an account? Login';
       } else {
-        title.textContent = "Login";
-        username.style.display = "none";
-        button.textContent = "Login";
+        title.textContent = 'Login';
+        username.style.display = 'none';
+        submitBtn.textContent = 'Login';
         toggleText.textContent = "Don't have an account? Create one";
       }
     }
 
     function handleAuth() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const username = document.getElementById("username").value.trim();
-      const errorMsg = document.getElementById("error-message");
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const usernameField = document.getElementById('username');
+      const errorBox = document.getElementById('error-message');
 
-      let users = JSON.parse(localStorage.getItem("vv_users") || "[]");
-
-      if (isSignup) {
-        if (!username || !email || !password) {
-          errorMsg.textContent = "Please fill all fields.";
-          errorMsg.style.display = "block";
-          return;
-        }
-        if (users.some(u => u.email === email)) {
-          errorMsg.textContent = "User already exists!";
-          errorMsg.style.display = "block";
-          return;
-        }
-        users.push({ username, email, password });
-        localStorage.setItem("vv_users", JSON.stringify(users));
-        alert("✅ Account created! Please log in.");
-        toggleForm();
-      } else {
-        const user = users.find(u => u.email === email && u.password === password);
-        if (!user) {
-          errorMsg.textContent = "Invalid credentials!";
-          errorMsg.style.display = "block";
-          return;
-        }
-        showPage("main-content");
+      if (!email || !password || (isSignup && !usernameField.value.trim())) {
+        errorBox.style.display = 'block';
+        errorBox.textContent = 'Please fill in all fields.';
+        return;
       }
+
+      const username = (isSignup ? usernameField.value.trim() : (localStorage.getItem('voyagerUsername') || email.split('@')[0]));
+      localStorage.setItem('voyagerUsername', username);
+
+      showPage('main-content');
+      document.getElementById('greeting').textContent = `👋 Hi, ${username}! Welcome to Vigilent Voyager 🚀`;
+      getAccurateLocation();
     }
 
-    function planTrip() { showPage("trip-options"); }
-
+    // ---------- trip flow ----------
     function selectTripType(el, type) {
       selectedTripType = type;
-      document.querySelectorAll(".trip-card").forEach(c => c.classList.remove("active-selection"));
-      el.classList.add("active-selection");
-      document.getElementById("distance-container").style.display = "block";
+      document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-selection'));
+      el.classList.add('active-selection');
+      selectedDistance = null; selectedExperience = null;
+      document.getElementById('distance-container').style.display = 'block';
+      document.getElementById('experience-container').style.display = 'none';
+      // smooth scroll on small screens
+      el.scrollIntoView({behavior:'smooth', block:'center'});
     }
 
     function selectDistance(el, distance) {
       selectedDistance = distance;
-      document.querySelectorAll(".distance-card").forEach(c => c.classList.remove("active-selection"));
-      el.classList.add("active-selection");
-      document.getElementById("experience-container").style.display = "block";
+      document.querySelectorAll('.distance-card').forEach(c => c.classList.remove('active-selection'));
+      el.classList.add('active-selection');
+      document.getElementById('experience-container').style.display = 'block';
+      el.scrollIntoView({behavior:'smooth', block:'center'});
     }
 
     function selectExperience(el, exp) {
       selectedExperience = exp;
-      document.querySelectorAll(".experience-card").forEach(c => c.classList.remove("active-selection"));
-      el.classList.add("active-selection");
-      alert(`✅ Trip Planned:\nType: ${selectedTripType}\nDistance: ${selectedDistance} km\nExperience: ${selectedExperience}`);
+      document.querySelectorAll('.experience-card').forEach(c => c.classList.remove('active-selection'));
+      el.classList.add('active-selection');
+      showResults();
     }
 
-    function goBackToMain() { showPage("main-content"); }
-    function safeScore() { alert("Safe score feature coming soon!"); }
+    function showResults() {
+      const grid = document.getElementById("resultsGrid");
+      grid.innerHTML = "";
+      if (!selectedTripType || !selectedExperience || (selectedDistance === null || selectedDistance === undefined)) {
+        grid.innerHTML = '<p style="padding:18px;color:#333">Please choose trip type, distance, and experience.</p>';
+        document.getElementById('results-title').textContent = 'Suggested Places';
+        showPage("results-page");
+        return;
+      }
+
+      const list = (PLACES[selectedTripType] && PLACES[selectedTripType][selectedExperience]) || [];
+      const filtered = list.filter(item => item.distance <= selectedDistance);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p style="padding:18px;color:#333">No locations found within ${selectedDistance} km for ${selectedTripType} — ${selectedExperience}.</p>`;
+        document.getElementById('results-title').textContent = `Suggested Places for ${selectedTripType} • ${selectedExperience}`;
+        showPage("results-page");
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "result-card";
+        card.innerHTML = `
+          <img src="${p.img}" alt="${escapeHTML(p.name)}">
+          <div class="result-info">
+            <h3>${escapeHTML(p.name)}</h3>
+            <p>${escapeHTML(p.type)} — ${p.distance} km away</p>
+            <div style="margin-top:8px;display:flex;gap:8px;justify-content:center">
+              <button class="btn" onclick="openMap('${encodeURIComponent(p.name)}')">📍 View on Map</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById("results-title").textContent = `Suggested Places for ${selectedTripType} • ${selectedExperience}`;
+      showPage("results-page");
+    }
+
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, function (m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+    }
+
+    function openMap(placeNameEncoded) {
+      const placeName = decodeURIComponent(placeNameEncoded);
+      const mapUrl = 'https://www.google.com/maps?q=' + encodeURIComponent(placeName) + '&output=embed';
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:99999;padding:20px;';
+      const modal = document.createElement('div');
+      modal.style.cssText = 'width:100%;max-width:1000px;height:80vh;background:white;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.4);overflow:hidden;position:relative;display:flex;flex-direction:column;';
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '✖ Close';
+      closeBtn.style.cssText = 'position:absolute;right:12px;top:12px;z-index:3;background:#007BFF;color:white;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;';
+      const iframe = document.createElement('iframe');
+      iframe.src = mapUrl;
+      iframe.width = '100%';
+      iframe.height = '100%';
+      iframe.style.border = '0';
+      iframe.style.flex = '1 1 auto';
+      modal.appendChild(closeBtn);
+      modal.appendChild(iframe);
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+      closeBtn.addEventListener('click', () => overlay.remove());
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    }
+
+    // ---------- location helpers ----------
+    async function getAccurateLocation() {
+      const a = document.getElementById('area');
+      const d = document.getElementById('district');
+      const s = document.getElementById('state');
+
+      if (!navigator.geolocation) {
+        a.textContent = 'Unavailable'; d.textContent = 'Unavailable'; s.textContent = 'Unavailable'; return;
+      }
+
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+        try {
+          const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2&addressdetails=1`;
+          const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+          const json = await res.json();
+          const addr = json.address || {};
+          a.textContent = addr.suburb || addr.neighbourhood || addr.village || addr.city || addr.town || 'N/A';
+          d.textContent = addr.county || addr.state_district || addr.city || 'N/A';
+          s.textContent = addr.state || addr.region || 'N/A';
+        } catch (err) {
+          a.textContent = `Lat: ${lat.toFixed(4)}`; d.textContent = `Lon: ${lon.toFixed(4)}`; s.textContent = '(approx)';
+        }
+      }, async () => {
+        try {
+          const res = await fetch('https://ipapi.co/json/');
+          const ip = await res.json();
+          a.textContent = ip.city || 'N/A'; d.textContent = ip.region || 'N/A'; s.textContent = ip.country_name || 'N/A';
+        } catch {
+          a.textContent = 'Unavailable'; d.textContent = 'Unavailable'; s.textContent = 'Unavailable';
+        }
+      }, { timeout: 10000 });
+    }
+
+    // ---------- SAFE SCORE ----------
+    function safeScore() {
+      showPage('safe-score-section');
+      const desc = document.querySelector('.safe-desc');
+      desc.textContent = 'Fetching safety data for your area...';
+      setTimeout(() => {
+        const harassment = getRandomScore(30,95);
+        const theft = getRandomScore(20,90);
+        const police = getRandomScore(40,100);
+        updateScore('harassmentScore', harassment);
+        updateScore('theftScore', theft);
+        updateScore('policeScore', police);
+        const overall = Math.round((harassment + theft + police) / 3);
+        document.getElementById('overallSafeScore').textContent = `Overall Safe Score: ${overall}/100`;
+        desc.textContent = 'Scores are estimated using local reports and user-sourced trends (simulated).';
+      }, 1000);
+    }
+
+    function getRandomScore(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    function updateScore(cardId, score) {
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      const valueEl = card.querySelector('.score-value');
+      const labelEl = card.querySelector('.score-label');
+      valueEl.textContent = `${score}/100`;
+      if (score >= 80) { valueEl.style.color = '#00b894'; labelEl.textContent = 'Very Safe'; }
+      else if (score >= 60) { valueEl.style.color = '#f1c40f'; labelEl.textContent = 'Moderately Safe'; }
+      else { valueEl.style.color = '#e74c3c'; labelEl.textContent = 'Risky'; }
+    }
   </script>
 </body>
 </html>
