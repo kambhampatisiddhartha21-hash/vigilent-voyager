@@ -207,58 +207,80 @@
     let selectedExperience = null;
 
     // ---------- dataset ----------
-    const PLACES = {
-      "Couple": {
-        "Adventure": [
-          {name:"Durgam Cheruvu Boating", type:"Lake Adventure", distance:3.1, img:"https://i.imgur.com/TSG68HR.jpg"},
-          {name:"Sky Zone Hyderabad", type:"Trampoline Park", distance:8.0, img:"https://i.imgur.com/v6zZ6RG.jpg"}
-        ],
-        "Nature": [
-          {name:"Botanical Garden Hyderabad", type:"Nature Park", distance:7.0, img:"https://i.imgur.com/l2bTRSC.jpg"},
-          {name:"Durgam Cheruvu Lake Walk", type:"Scenic View", distance:3.1, img:"https://i.imgur.com/KC31x4W.jpg"}
-        ],
-        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
-        "Historical": [{name:"Golconda Fort", type:"Fort", distance:13.0, img:"https://i.imgur.com/W8X1YZf.jpg"}],
-        "Professional": [{name:"The Gallery Cafe Hyderabad", type:"Cafe Workspace", distance:4.2, img:"https://i.imgur.com/AXYFqfJ.jpg"}],
-        "Exploring": [{name:"Shilparamam Crafts Village", type:"Cultural Market", distance:3.5, img:"https://i.imgur.com/4vQh0mM.jpg"}]
-      },
-      "Friends": {
-        "Adventure": [
-          {name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"https://i.imgur.com/v6zZ6RG.jpg"},
-          {name:"LaserMaxx Hyderabad", type:"Laser Tag Arena", distance:6.5, img:"https://i.imgur.com/zZZ2r5S.jpg"}
-        ],
-        "Nature": [{name:"Durgam Cheruvu Lake", type:"Scenic Spot", distance:3.1, img:"https://i.imgur.com/KC31x4W.jpg"}],
-        "Devotional": [{name:"ISKCON Temple Hyderabad", type:"Temple", distance:10.5, img:"https://i.imgur.com/7N5R8Ge.jpg"}],
-        "Historical": [{name:"Golconda Fort", type:"Historic Fort", distance:13.0, img:"https://i.imgur.com/W8X1YZf.jpg"}],
-        "Professional": [{name:"T-Hub Hyderabad", type:"Innovation Hub", distance:2.5, img:"https://i.imgur.com/NMdB2dG.jpg"}],
-        "Exploring": [{name:"Shilparamam", type:"Cultural Spot", distance:3.5, img:"https://i.imgur.com/4vQh0mM.jpg"}]
-      },
+    // ---------- dataset ----------
+const PLACES = {
+  "Couple": {
+    "Adventure": [
+      {name:"Durgam Cheruvu Boating", type:"Lake Adventure", distance:3.1, img:"botanical.jpg"},
+      {name:"Sky Zone Hyderabad", type:"Trampoline Park", distance:8.0, img:"skyzone.jpg"}
+    ],
+    "Nature": [
+      {name:"Botanical Garden Hyderabad", type:"Nature Park", distance:7.0, img:"botanical.jpg"},
+      {name:"Durgam Cheruvu Lake Walk", type:"Scenic View", distance:3.1, img:"durgam.jpg"}
+    ],
+    "Devotional": [
+      {name:"Peddamma Temple", type:"Temple", distance:2.9, img:"peddamma.jpg"}
+    ],
+    "Historical": [
+      {name:"Golconda Fort", type:"Fort", distance:13.0, img:"golconda.jpg"}
+    ],
+    "Professional": [
+      {name:"The Gallery Cafe Hyderabad", type:"Cafe Workspace", distance:4.2, img:"cafe.jpg"}
+    ],
+    "Exploring": [
+      {name:"Shilparamam Crafts Village", type:"Cultural Market", distance:3.5, img:"shilparavam.jpg"}
+    ]
+  },
+  "Friends": {
+    "Adventure": [
+      {name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"skyzone.jpg"},
+      {name:"LaserMaxx Hyderabad", type:"Laser Tag Arena", distance:6.5, img:"lazer.jpg"}
+    ],
+    "Nature": [
+      {name:"Durgam Cheruvu Lake", type:"Scenic Spot", distance:3.1, img:"durgam.jpg"}
+    ],
+    "Devotional": [
+      {name:"ISKCON Temple Hyderabad", type:"Temple", distance:10.5, img:"iskcon.jpg"}
+    ],
+    "Historical": [
+      {name:"Golconda Fort", type:"Historic Fort", distance:13.0, img:"golconda.jpg"}
+    ],
+    "Professional": [
+      {name:"T-Hub Hyderabad", type:"Innovation Hub", distance:2.5, img:"https://i.imgur.com/NMdB2dG.jpg"}
+    ],
+    "Exploring": [
+      {name:"Shilparamam", type:"Cultural Spot", distance:3.5, img:"shilparavam.jpg"}
+    ]
+  },
+  // (rest of your Family, Business, Others objects remain unchanged)
+
+
       "Family": {
-        "Adventure": [{name:"PlayMax Game Arena", type:"Indoor Games", distance:4.9, img:"https://i.imgur.com/HPOgN4R.jpg"}],
-        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"https://i.imgur.com/l2bTRSC.jpg"}],
-        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
+        "Adventure": [{name:"PlayMax Game Arena", type:"Indoor Games", distance:4.9, img:"pingball.jpg"}],
+        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"botanical.jpg"}],
+        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"peddamma.jpg"}],
         "Historical": [{name:"Salar Jung Museum", type:"Museum", distance:15.0, img:"https://i.imgur.com/tRr1qSa.jpg"}],
-        "Professional": [{name:"Minerva Coffee Shop", type:"Restaurant", distance:5.5, img:"https://i.imgur.com/J6hrEpD.jpg"}],
-        "Exploring": [{name:"Inorbit Mall Hyderabad", type:"Shopping & Food", distance:5.2, img:"https://i.imgur.com/J6hrEpD.jpg"}]
+        "Professional": [{name:"Minerva Coffee Shop", type:"Restaurant", distance:5.5, img:"cafe.jpg"}],
+        "Exploring": [{name:"Inorbit Mall Hyderabad", type:"Shopping & Food", distance:5.2, img:"inorbitmall.jpg"}]
       },
       "Business": {
-        "Adventure": [{name:"Corporate Team Outing Arena Hyderabad", type:"Team Activity", distance:9.0, img:"https://i.imgur.com/0L9HzZc.jpg"}],
-        "Nature": [{name:"Durgam Cheruvu", type:"Scenic View", distance:3.1, img:"https://i.imgur.com/KC31x4W.jpg"}],
-        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.8, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
-        "Historical": [{name:"Cyber Towers", type:"Landmark Building", distance:2.5, img:"https://i.imgur.com/xH8OGcd.jpg"}],
+        "Adventure": [{name:"Corporate Team Outing Arena Hyderabad", type:"Team Activity", distance:9.0, img:"teambuilding.jpg"}],
+        "Nature": [{name:"Durgam Cheruvu", type:"Scenic View", distance:3.1, img:"durgam.jpg"}],
+        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.8, img:"peddamma.jpg"}],
+        "Historical": [{name:"Cyber Towers", type:"Landmark Building", distance:2.5, img:"cybertowers.jpg"}],
         "Professional": [
           {name:"WeWork Krishe Emerald", type:"Co-working Space", distance:1.8, img:"https://i.imgur.com/jcQ4cvY.jpg"},
-          {name:"Collab House Hyderabad", type:"Workspace", distance:5.7, img:"https://i.imgur.com/0L9HzZc.jpg"}
+          {name:"Collab House Hyderabad", type:"Workspace", distance:5.7, img:"collabhouse.jpg"}
         ],
         "Exploring": [{name:"Mindspace IT Park", type:"Business Hub", distance:4.0, img:"https://i.imgur.com/sv8Phzi.jpg"}]
       },
       "Others": {
-        "Adventure": [{name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"https://i.imgur.com/v6zZ6RG.jpg"}],
-        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"https://i.imgur.com/l2bTRSC.jpg"}],
-        "Devotional": [{name:"Local Shrine", type:"Temple", distance:3.0, img:"https://i.imgur.com/4Rm1zYf.jpg"}],
-        "Historical": [{name:"Golconda Fort", type:"Historic", distance:13.0, img:"https://i.imgur.com/W8X1YZf.jpg"}],
-        "Professional": [{name:"Co-work Cafe", type:"Workspace", distance:5.0, img:"https://i.imgur.com/BvUuq4h.jpg"}],
-        "Exploring": [{name:"Shilparamam", type:"Village/Market", distance:3.5, img:"https://i.imgur.com/4vQh0mM.jpg"}]
+        "Adventure": [{name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"skyzone.jpg"}],
+        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"botanical.jpg"}],
+        "Devotional": [{name:"Local Shrine", type:"Temple", distance:3.0, img:"localshinetemple.jpg"}],
+        "Historical": [{name:"Golconda Fort", type:"Historic", distance:13.0, img:"golconda.jpg"}],
+        "Professional": [{name:"Co-work Cafe", type:"Workspace", distance:5.0, img:"quitecafe.jpg"}],
+        "Exploring": [{name:"Shilparamam", type:"Village/Market", distance:3.5, img:"shilparavam.jpg"}]
       }
     };
 
