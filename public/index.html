@@ -5,68 +5,75 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vigilent Voyager</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Supabase client (UMD build) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{width:100%;height:100%;font-family:"Poppins",sans-serif;background:linear-gradient(135deg,#f5f9ff,#dfefff);color:#333;overflow:hidden}
-    section{position:absolute;top:0;left:0;width:100%;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .35s ease}
-    section.active{display:flex!important;opacity:1!important;z-index:10}
-    .hero{position:relative;background:url('background.jpg') center/cover no-repeat;color:#fff;text-align:center}
-    .hero::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:1}
-    .hero-content{position:relative;z-index:2;padding:28px;border-radius:12px;background:rgba(0,0,0,0.18)}
-    .hero-content h1{font-size:2.8rem;font-weight:700;margin-bottom:8px}
-    .hero-content p{color:#f5f5f5;margin-bottom:14px}
-    .btn{padding:12px 26px;border-radius:8px;border:none;background:#00b894;color:#fff;font-weight:600;cursor:pointer}
-    .btn:hover{background:#019875}
-    #login-screen{display:flex;align-items:center;justify-content:flex-end;position:relative;background:url('background.jpg') center/cover no-repeat}
-    #login-screen::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:0}
-    #login-box{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:2;background:rgba(255,255,255,.98);padding:28px;width:360px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);text-align:center}
-    #login-box h2{color:#007BFF;margin-bottom:12px}
-    #login-box input{width:92%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
-    #login-box button{width:100%;padding:12px;border:none;border-radius:8px;background:#007BFF;color:#fff;font-weight:600;cursor:pointer}
-    #login-box button:hover{background:#0056b3}
-    .toggle{display:block;margin-top:10px;color:#007BFF;cursor:pointer;text-decoration:underline;font-size:13px}
-    #error-message{color:#c0392b;margin-top:8px;display:none;font-size:13px}
-    #main-content{flex-direction:column;justify-content:flex-start;padding-top:86px}
-    #location-box{position:absolute;top:18px;left:18px;background:#f9f9f9;border:2px solid #007BFF;padding:10px 12px;border-radius:8px;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
-    .title{font-size:2rem;color:#007BFF;font-weight:700;margin-top:36px;text-align:center}
-    #greeting{margin-top:18px;font-size:1.4rem;font-weight:700;text-align:center;background:linear-gradient(90deg,#007BFF,#00b894);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .subtitle{color:#555;margin-top:12px;text-align:center;max-width:760px}
-    .feature-boxes{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin-top:44px}
-    .box{width:260px;height:170px;border:3px solid #007BFF;border-radius:12px;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#fff;color:#007BFF;font-weight:700;cursor:pointer;transition:all .25s ease;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-    .box:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.09)}
-    .box-desc{font-size:14px;color:#555;margin-top:10px;font-weight:400;text-align:center;width:80%}
-    footer{position:absolute;bottom:0;width:100%;background:#007BFF;color:#fff;text-align:center;padding:12px}
-    #trip-options{padding-top:70px;overflow-y:auto;align-items:flex-start}
-    .trip-container{width:100%;padding:36px 20px 80px;display:flex;flex-direction:column;align-items:center}
-    .trip-container h2{color:#007BFF;font-size:1.8rem;margin-bottom:14px}
-    .trip-choice-grid,.distance-grid,.experience-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
-    .trip-card,.distance-card,.experience-card{width:200px;height:110px;background:#fff;border-radius:12px;border:2px solid #007BFF;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#007BFF;cursor:pointer;transition:all .25s ease;box-shadow:0 6px 16px rgba(0,0,0,0.06)}
-    .trip-card:hover,.distance-card:hover,.experience-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,0.09)}
-    .active-selection{background:#007BFF!important;color:#fff!important;box-shadow:0 0 18px rgba(0,123,255,0.45)!important}
-    #distance-container,#experience-container{display:none;margin-top:20px;width:100%;max-width:980px}
-    .btn-back{margin-top:30px;padding:10px 20px;border:none;border-radius:8px;background:#007BFF;color:white;cursor:pointer;font-weight:600}
-    .btn-back:hover{background:#0056b3}
-    #results-page{background:linear-gradient(135deg,#f5f9ff,#e8f3ff);justify-content:flex-start;padding-top:80px;overflow-y:auto}
-    .results-grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:20px;padding-bottom:80px}
-    .result-card{width:280px;border-radius:12px;background:white;box-shadow:0 6px 18px rgba(0,0,0,.08);overflow:hidden;transition:transform .25s}
-    .result-card:hover{transform:translateY(-6px)}
-    .result-card img{width:100%;height:160px;object-fit:cover}
-    .result-info{padding:12px;text-align:center}
-    .result-info h3{color:#007BFF;font-size:1.05rem;margin-bottom:6px}
-    .result-info p{font-size:0.9rem;color:#555;margin:4px 0}
-    #safe-score-section{background:linear-gradient(135deg,#f5f9ff,#dfefff);justify-content:flex-start;padding-top:80px;display:none;flex-direction:column;align-items:center;opacity:0;transition:opacity .45s ease}
-    #safe-score-section.active{display:flex!important;opacity:1!important}
-    .safe-container{width:90%;max-width:900px;text-align:center;margin-bottom:50px}
-    .safe-container h2{color:#007BFF;font-size:2rem;font-weight:700}
-    .safe-desc{color:#555;margin-bottom:22px}
-    .score-card-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:20px}
-    .score-card{width:260px;height:160px;background:#fff;border-radius:12px;border:3px solid #007BFF;box-shadow:0 4px 10px rgba(0,0,0,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .25s ease}
-    .score-value{font-size:2rem;font-weight:700;color:#00b894}
-    .score-label{color:#555;font-size:.95rem}
-    .overall-score{margin-top:30px;font-size:1.3rem;font-weight:700;color:#007BFF;background:#fff;padding:12px 20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
-    .btn-safe-back{margin-top:20px;padding:10px 20px;border-radius:8px;border:none;background:#007BFF;color:#fff;cursor:pointer}
-    .btn-safe-back:hover{background:#0056b3}
-    @media (max-width:720px){#login-box{right:4%;width:320px}.trip-card,.distance-card,.experience-card{width:160px;height:100px;font-size:16px}.box{width:220px;height:150px}.result-card{width:90%}}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { width:100%; height:100%; font-family:"Poppins",sans-serif; background:linear-gradient(135deg,#f5f9ff,#dfefff); color:#333; overflow:hidden; }
+    section{ position:absolute; top:0; left:0; width:100%; height:100vh; display:none; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity .35s ease; }
+    section.active{ display:flex !important; opacity:1 !important; z-index:10; }
+    .hero{ position:relative; background:url('background.jpg') center/cover no-repeat; color:#fff; text-align:center; }
+    .hero::before{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.35); z-index:1; }
+    .hero-content{ position:relative; z-index:2; padding:28px; border-radius:12px; background:rgba(0,0,0,0.18); }
+    .hero-content h1{ font-size:2.8rem; font-weight:700; margin-bottom:8px; }
+    .hero-content p{ color:#f5f5f5; margin-bottom:14px; }
+    .btn{ padding:12px 26px; border-radius:8px; border:none; background:#00b894; color:#fff; font-weight:600; cursor:pointer; }
+    .btn:hover{ background:#019875; }
+    #login-screen{ display:flex; align-items:center; justify-content:flex-end; position:relative; background:url('background.jpg') center/cover no-repeat; }
+    #login-screen::before{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45); z-index:0; }
+    #login-box{ position:absolute; right:6%; top:50%; transform:translateY(-50%); z-index:2; background:rgba(255,255,255,.98); padding:28px; width:360px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.18); text-align:center; }
+    #login-box h2{ color:#007BFF; margin-bottom:12px; }
+    #login-box input{ width:92%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ccc; }
+    #login-box button{ width:100%; padding:12px; border:none; border-radius:8px; background:#007BFF; color:#fff; font-weight:600; cursor:pointer; }
+    #login-box button:hover{ background:#0056b3; }
+    .toggle{ display:block; margin-top:10px; color:#007BFF; cursor:pointer; text-decoration:underline; font-size:13px; }
+    #error-message{ color:#c0392b; margin-top:8px; display:none; font-size:13px; text-align:left; }
+    #verify-note{ display:none; color:#00b894; font-size:13px; margin-top:8px; text-align:left; }
+    #main-content{ flex-direction:column; justify-content:flex-start; padding-top:86px; }
+    #location-box{ position:absolute; top:18px; left:18px; background:#f9f9f9; border:2px solid #007BFF; padding:10px 12px; border-radius:8px; font-size:14px; box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .title{ font-size:2rem; color:#007BFF; font-weight:700; margin-top:36px; text-align:center; }
+    #greeting{ margin-top:18px; font-size:1.4rem; font-weight:700; text-align:center; background:linear-gradient(90deg,#007BFF,#00b894); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .subtitle{ color:#555; margin-top:12px; text-align:center; max-width:760px; }
+    .feature-boxes{ display:flex; flex-wrap:wrap; gap:28px; justify-content:center; margin-top:44px; }
+    .box{ width:260px; height:170px; border:3px solid #007BFF; border-radius:12px; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#fff; color:#007BFF; font-weight:700; cursor:pointer; transition:all .25s ease; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+    .box:hover{ transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.09); }
+    .box-desc{ font-size:14px; color:#555; margin-top:10px; font-weight:400; text-align:center; width:80%; }
+    footer{ position:absolute; bottom:0; width:100%; background:#007BFF; color:#fff; text-align:center; padding:12px; }
+    #trip-options{ padding-top:70px; overflow-y:auto; align-items:flex-start; }
+    .trip-container{ width:100%; padding:36px 20px 80px; display:flex; flex-direction:column; align-items:center; }
+    .trip-container h2{ color:#007BFF; font-size:1.8rem; margin-bottom:14px; }
+    .trip-choice-grid,.distance-grid,.experience-grid{ display:flex; flex-wrap:wrap; justify-content:center; gap:18px; }
+    .trip-card,.distance-card,.experience-card{ width:200px; height:110px; background:#fff; border-radius:12px; border:2px solid #007BFF; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; color:#007BFF; cursor:pointer; transition:all .25s ease; box-shadow:0 6px 16px rgba(0,0,0,0.06); }
+    .trip-card:hover,.distance-card:hover,.experience-card:hover{ transform:translateY(-6px); box-shadow:0 12px 28px rgba(0,0,0,0.09); }
+    .active-selection{ background:#007BFF!important; color:#fff!important; box-shadow:0 0 18px rgba(0,123,255,0.45)!important; }
+    #distance-container,#experience-container{ display:none; margin-top:20px; width:100%; max-width:980px; }
+    .btn-back{ margin-top:30px; padding:10px 20px; border:none; border-radius:8px; background:#007BFF; color:white; cursor:pointer; font-weight:600; }
+    .btn-back:hover{ background:#0056b3; }
+    #results-page{ background:linear-gradient(135deg,#f5f9ff,#e8f3ff); justify-content:flex-start; padding-top:80px; overflow-y:auto; }
+    .results-grid{ display:flex; flex-wrap:wrap; gap:24px; justify-content:center; margin-top:20px; padding-bottom:80px; }
+    .result-card{ width:280px; border-radius:12px; background:white; box-shadow:0 6px 18px rgba(0,0,0,.08); overflow:hidden; transition:transform .25s; }
+    .result-card:hover{ transform:translateY(-6px); }
+    .result-card img{ width:100%; height:160px; object-fit:cover; }
+    .result-info{ padding:12px; text-align:center; }
+    .result-info h3{ color:#007BFF; font-size:1.05rem; margin-bottom:6px; }
+    .result-info p{ font-size:0.9rem; color:#555; margin:4px 0; }
+    #safe-score-section{ background:linear-gradient(135deg,#f5f9ff,#dfefff); justify-content:flex-start; padding-top:80px; display:none; flex-direction:column; align-items:center; opacity:0; transition:opacity .45s ease; }
+    #safe-score-section.active{ display:flex!important; opacity:1!important; }
+    .safe-container{ width:90%; max-width:900px; text-align:center; margin-bottom:50px; }
+    .safe-container h2{ color:#007BFF; font-size:2rem; font-weight:700; }
+    .safe-desc{ color:#555; margin-bottom:22px; }
+    .score-card-grid{ display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+    .score-card{ width:260px; height:160px; background:#fff; border-radius:12px; border:3px solid #007BFF; box-shadow:0 4px 10px rgba(0,0,0,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; transition:all .25s ease; }
+    .score-value{ font-size:2rem; font-weight:700; color:#00b894; }
+    .score-label{ color:#555; font-size:.95rem; }
+    .overall-score{ margin-top:30px; font-size:1.3rem; font-weight:700; color:#007BFF; background:#fff; padding:12px 20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .btn-safe-back{ margin-top:20px; padding:10px 20px; border-radius:8px; border:none; background:#007BFF; color:#fff; cursor:pointer; }
+    .btn-safe-back:hover{ background:#0056b3; }
+    @media (max-width:720px) { #login-box{ right:4%; width:320px; } .trip-card,.distance-card,.experience-card{ width:160px; height:100px; font-size:16px; } .box{ width:220px; height:150px; } .result-card{ width:90%; } }
+    .vv-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:99999; padding:20px; }
+    .vv-modal{ width:100%; max-width:1000px; height:80vh; background:white; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.4); overflow:hidden; position:relative; display:flex; flex-direction:column; }
+    .vv-close{ position:absolute; right:12px; top:12px; z-index:3; background:#007BFF; color:white; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -83,11 +90,19 @@
   <section id="login-screen" aria-hidden="true">
     <div id="login-box" role="form" aria-label="Login form">
       <h2 id="form-title">Login</h2>
-      <input id="username" type="text" placeholder="Username (for signup)" style="display:none" />
-      <input id="email" type="email" placeholder="Email" />
-      <input id="password" type="password" placeholder="Password" />
+
+      <!-- Username always visible -->
+      <input id="username" type="text" placeholder="Username" />
+
+      <!-- Email is visible (but will be made readonly after first signup) -->
+      <input id="email" type="email" placeholder="Email" autocomplete="username" />
+
+      <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
       <button id="submitBtn" type="button">Login</button>
+
       <div id="error-message" role="alert" aria-live="polite"></div>
+      <div id="verify-note">A verification email has been sent. Please check your inbox before logging in.</div>
+
       <span class="toggle" id="toggleFormBtn" role="button" tabindex="0">Don't have an account? Create one</span>
     </div>
   </section>
@@ -115,7 +130,8 @@
       </div>
     </div>
 
-    <footer>© 2025 Vigilent Voyager | Built with ❤️ by Mapminds</footer>
+    <button id="logoutBtn" class="btn" style="position:absolute; top:18px; right:18px;">Logout</button>
+    <footer>© 2025 Vigilent Voyager | Built with ❤ by Mapminds</footer>
   </section>
 
   <!-- TRIP OPTIONS -->
@@ -158,7 +174,7 @@
     </div>
   </section>
 
-  <!-- TRIP RESULTS -->
+  <!-- RESULTS PAGE -->
   <section id="results-page" aria-hidden="true">
     <div class="trip-container">
       <h2 id="results-title">Suggested Places</h2>
@@ -199,15 +215,35 @@
     </div>
   </section>
 
-  <script>
-    // ---------- state ----------
-    let isSignup = false;
-    let selectedTripType = null;
-    let selectedDistance = null;
-    let selectedExperience = null;
+<script>
+/* =========================
+   CONFIG (use provided values)
+   ========================= */
+const SUPABASE_URL = "https://tqhuzwggelkxnsrsrumq.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxaHV6d2dnZWxreG5zcnNydW1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MTUxNDQsImV4cCI6MjA3ODQ5MTE0NH0.d1otu94KmuyqTwgVuTHP4tNcOq3U2rPP4L_yWHQ-pDg";
 
-    // ---------- dataset ----------
-    // ---------- dataset ----------
+/* Initialize Supabase client safely */
+let supabase = null;
+try {
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else if (window.Supabase && typeof window.Supabase.createClient === 'function') {
+    supabase = window.Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    console.error("Supabase library missing or not loaded correctly.");
+  }
+} catch (err) {
+  console.error("Supabase init error:", err);
+}
+
+/* =============
+   App state & data
+   ============= */
+let isSignup = false;
+let selectedTripType = null;
+let selectedDistance = null;
+let selectedExperience = null;
+
 const PLACES = {
   "Couple": {
     "Adventure": [
@@ -218,310 +254,448 @@ const PLACES = {
       {name:"Botanical Garden Hyderabad", type:"Nature Park", distance:7.0, img:"botanical.jpg"},
       {name:"Durgam Cheruvu Lake Walk", type:"Scenic View", distance:3.1, img:"durgam.jpg"}
     ],
-    "Devotional": [
-      {name:"Peddamma Temple", type:"Temple", distance:2.9, img:"peddamma.jpg"}
-    ],
-    "Historical": [
-      {name:"Golconda Fort", type:"Fort", distance:13.0, img:"golconda.jpg"}
-    ],
-    "Professional": [
-      {name:"The Gallery Cafe Hyderabad", type:"Cafe Workspace", distance:4.2, img:"cafe.jpg"}
-    ],
-    "Exploring": [
-      {name:"Shilparamam Crafts Village", type:"Cultural Market", distance:3.5, img:"shilparavam.jpg"}
-    ]
+    "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"peddamma.jpg"}],
+    "Historical": [{name:"Golconda Fort", type:"Fort", distance:13.0, img:"golconda.jpg"}],
+    "Professional": [{name:"The Gallery Cafe Hyderabad", type:"Cafe Workspace", distance:4.2, img:"cafe.jpg"}],
+    "Exploring": [{name:"Shilparamam Crafts Village", type:"Cultural Market", distance:3.5, img:"shilparavam.jpg"}]
   },
   "Friends": {
     "Adventure": [
       {name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"skyzone.jpg"},
       {name:"LaserMaxx Hyderabad", type:"Laser Tag Arena", distance:6.5, img:"lazer.jpg"}
     ],
-    "Nature": [
-      {name:"Durgam Cheruvu Lake", type:"Scenic Spot", distance:3.1, img:"durgam.jpg"}
-    ],
-    "Devotional": [
-      {name:"ISKCON Temple Hyderabad", type:"Temple", distance:10.5, img:"iskcon.jpg"}
-    ],
-    "Historical": [
-      {name:"Golconda Fort", type:"Historic Fort", distance:13.0, img:"golconda.jpg"}
-    ],
-    "Professional": [
-      {name:"T-Hub Hyderabad", type:"Innovation Hub", distance:2.5, img:"https://i.imgur.com/NMdB2dG.jpg"}
-    ],
-    "Exploring": [
-      {name:"Shilparamam", type:"Cultural Spot", distance:3.5, img:"shilparavam.jpg"}
-    ]
+    "Nature": [{name:"Durgam Cheruvu Lake", type:"Scenic Spot", distance:3.1, img:"durgam.jpg"}],
+    "Devotional": [{name:"ISKCON Temple Hyderabad", type:"Temple", distance:10.5, img:"iskcon.jpg"}],
+    "Historical": [{name:"Golconda Fort", type:"Historic Fort", distance:13.0, img:"golconda.jpg"}],
+    "Professional": [{name:"T-Hub Hyderabad", type:"Innovation Hub", distance:2.5, img:"https://i.imgur.com/NMdB2dG.jpg"}],
+    "Exploring": [{name:"Shilparamam", type:"Cultural Spot", distance:3.5, img:"shilparavam.jpg"}]
   },
-  // (rest of your Family, Business, Others objects remain unchanged)
+  "Family": {
+    "Adventure": [{name:"PlayMax Game Arena", type:"Indoor Games", distance:4.9, img:"pingball.jpg"}],
+    "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"botanical.jpg"}],
+    "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"peddamma.jpg"}],
+    "Historical": [{name:"Salar Jung Museum", type:"Museum", distance:15.0, img:"https://i.imgur.com/tRr1qSa.jpg"}],
+    "Professional": [{name:"Minerva Coffee Shop", type:"Restaurant", distance:5.5, img:"cafe.jpg"}],
+    "Exploring": [{name:"Inorbit Mall Hyderabad", type:"Shopping & Food", distance:5.2, img:"inorbitmall.jpg"}]
+  },
+  "Business": {
+    "Adventure": [{name:"Corporate Team Outing Arena Hyderabad", type:"Team Activity", distance:9.0, img:"teambuilding.jpg"}],
+    "Nature": [{name:"Durgam Cheruvu", type:"Scenic View", distance:3.1, img:"durgam.jpg"}],
+    "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.8, img:"peddamma.jpg"}],
+    "Historical": [{name:"Cyber Towers", type:"Landmark Building", distance:2.5, img:"cybertowers.jpg"}],
+    "Professional": [
+      {name:"WeWork Krishe Emerald", type:"Co-working Space", distance:1.8, img:"https://i.imgur.com/jcQ4cvY.jpg"},
+      {name:"Collab House Hyderabad", type:"Workspace", distance:5.7, img:"collabhouse.jpg"}
+    ],
+    "Exploring": [{name:"Mindspace IT Park", type:"Business Hub", distance:4.0, img:"https://i.imgur.com/sv8Phzi.jpg"}]
+  },
+  "Others": {
+    "Adventure": [{name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"skyzone.jpg"}],
+    "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"botanical.jpg"}],
+    "Devotional": [{name:"Local Shrine", type:"Temple", distance:3.0, img:"localshinetemple.jpg"}],
+    "Historical": [{name:"Golconda Fort", type:"Historic", distance:13.0, img:"golconda.jpg"}],
+    "Professional": [{name:"Co-work Cafe", type:"Workspace", distance:5.0, img:"quitecafe.jpg"}],
+    "Exploring": [{name:"Shilparamam", type:"Village/Market", distance:3.5, img:"shilparavam.jpg"}]
+  }
+};
 
+/* ========================
+   DOM helpers & navigation
+   ======================== */
+function showPage(id) {
+  document.querySelectorAll('section').forEach(s => { s.classList.remove('active'); s.setAttribute('aria-hidden','true'); });
+  const sec = document.getElementById(id);
+  if (!sec) return;
+  sec.classList.add('active');
+  sec.setAttribute('aria-hidden','false');
+  if (['trip-options','results-page','safe-score-section'].includes(id)) document.body.style.overflow = 'auto';
+  else document.body.style.overflow = 'hidden';
+}
 
-      "Family": {
-        "Adventure": [{name:"PlayMax Game Arena", type:"Indoor Games", distance:4.9, img:"pingball.jpg"}],
-        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"botanical.jpg"}],
-        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.9, img:"peddamma.jpg"}],
-        "Historical": [{name:"Salar Jung Museum", type:"Museum", distance:15.0, img:"https://i.imgur.com/tRr1qSa.jpg"}],
-        "Professional": [{name:"Minerva Coffee Shop", type:"Restaurant", distance:5.5, img:"cafe.jpg"}],
-        "Exploring": [{name:"Inorbit Mall Hyderabad", type:"Shopping & Food", distance:5.2, img:"inorbitmall.jpg"}]
-      },
-      "Business": {
-        "Adventure": [{name:"Corporate Team Outing Arena Hyderabad", type:"Team Activity", distance:9.0, img:"teambuilding.jpg"}],
-        "Nature": [{name:"Durgam Cheruvu", type:"Scenic View", distance:3.1, img:"durgam.jpg"}],
-        "Devotional": [{name:"Peddamma Temple", type:"Temple", distance:2.8, img:"peddamma.jpg"}],
-        "Historical": [{name:"Cyber Towers", type:"Landmark Building", distance:2.5, img:"cybertowers.jpg"}],
-        "Professional": [
-          {name:"WeWork Krishe Emerald", type:"Co-working Space", distance:1.8, img:"https://i.imgur.com/jcQ4cvY.jpg"},
-          {name:"Collab House Hyderabad", type:"Workspace", distance:5.7, img:"collabhouse.jpg"}
-        ],
-        "Exploring": [{name:"Mindspace IT Park", type:"Business Hub", distance:4.0, img:"https://i.imgur.com/sv8Phzi.jpg"}]
-      },
-      "Others": {
-        "Adventure": [{name:"Sky Zone Hyderabad", type:"Adventure Park", distance:8.7, img:"skyzone.jpg"}],
-        "Nature": [{name:"Botanical Garden Hyderabad", type:"Park", distance:7.0, img:"botanical.jpg"}],
-        "Devotional": [{name:"Local Shrine", type:"Temple", distance:3.0, img:"localshinetemple.jpg"}],
-        "Historical": [{name:"Golconda Fort", type:"Historic", distance:13.0, img:"golconda.jpg"}],
-        "Professional": [{name:"Co-work Cafe", type:"Workspace", distance:5.0, img:"quitecafe.jpg"}],
-        "Exploring": [{name:"Shilparamam", type:"Village/Market", distance:3.5, img:"shilparavam.jpg"}]
-      }
-    };
+/* ========================
+   AUTH & local-store logic
+   ======================== */
 
-    // ---------- boot ----------
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('getStartedBtn').addEventListener('click', () => showPage('login-screen'));
-      document.getElementById('toggleFormBtn').addEventListener('click', toggleForm);
-      document.getElementById('submitBtn').addEventListener('click', handleAuth);
-      document.getElementById('planTripBtn').addEventListener('click', () => showPage('trip-options'));
-      document.getElementById('safeScoreBtn').addEventListener('click', safeScore);
-      document.getElementById('tripBackBtn').addEventListener('click', () => showPage('main-content'));
-      document.getElementById('safeBackBtn').addEventListener('click', () => showPage('main-content'));
+/**
+ * handleAuthClick: called when user clicks the main submit button.
+ * Behavior:
+ *  - If `isSignup` true: sign up via Supabase; on success upsert profile.
+ *  - If `isSignup` false: sign in via Supabase using email (email prefills from localStorage).
+ */
+async function handleAuthClick() {
+  const usernameEl = document.getElementById('username');
+  const emailEl = document.getElementById('email');
+  const passwordEl = document.getElementById('password');
+  const errorBox = document.getElementById('error-message');
+  const verifyNote = document.getElementById('verify-note');
 
-      document.querySelectorAll('.trip-card').forEach(el => { el.addEventListener('click', () => selectTripType(el, el.dataset.type)); });
-      document.querySelectorAll('.distance-card').forEach(el => { el.addEventListener('click', () => selectDistance(el, parseFloat(el.dataset.distance))); });
-      document.querySelectorAll('.experience-card').forEach(el => { el.addEventListener('click', () => selectExperience(el, el.dataset.exp)); });
+  errorBox.style.display = 'none';
+  errorBox.textContent = '';
+  verifyNote.style.display = 'none';
 
-      // greet if saved
-      const stored = localStorage.getItem('voyagerUsername');
-      if (stored) {
-        document.getElementById('greeting').textContent = `👋 Hi, ${stored}! Welcome back to Vigilent Voyager 🚀`;
-        getAccurateLocation();
-      } else {
-        document.getElementById('greeting').textContent = 'Plan smarter, travel safer.';
-      }
+  const username = usernameEl.value.trim();
+  const email = emailEl.value.trim();
+  const password = passwordEl.value;
 
-      showPage('hero');
-    });
+  if (!username || !email || !password) {
+    errorBox.textContent = 'Please enter username, email and password.';
+    errorBox.style.display = 'block';
+    return;
+  }
 
-    // ---------- navigation ----------
-    function showPage(id) {
-      document.querySelectorAll('section').forEach(s => { s.classList.remove('active'); s.setAttribute('aria-hidden','true'); });
-      const sec = document.getElementById(id);
-      if (!sec) return;
-      sec.classList.add('active');
-      sec.setAttribute('aria-hidden','false');
-      // allow scroll on long pages only
-      if (id === 'trip-options' || id === 'results-page' || id === 'safe-score-section') document.body.style.overflow = 'auto';
-      else document.body.style.overflow = 'hidden';
-    }
+  if (!supabase) {
+    // fallback: store locally, show main
+    localStorage.setItem('voyagerUsername', username);
+    localStorage.setItem('voyagerEmail', email);
+    document.getElementById('greeting').textContent = `👋 Hi, ${username}! (Local)`;
+    showPage('main-content');
+    getAccurateLocation();
+    return;
+  }
 
-    // ---------- auth ----------
-    function toggleForm() {
-      isSignup = !isSignup;
-      const title = document.getElementById('form-title');
-      const username = document.getElementById('username');
-      const submitBtn = document.getElementById('submitBtn');
-      const toggleText = document.getElementById('toggleFormBtn');
-      document.getElementById('error-message').style.display = 'none';
-      if (isSignup) {
-        title.textContent = 'Create Account';
-        username.style.display = 'block';
-        submitBtn.textContent = 'Sign Up';
-        toggleText.textContent = 'Already have an account? Login';
-      } else {
-        title.textContent = 'Login';
-        username.style.display = 'none';
-        submitBtn.textContent = 'Login';
-        toggleText.textContent = "Don't have an account? Create one";
-      }
-    }
-
-    function handleAuth() {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const usernameField = document.getElementById('username');
-      const errorBox = document.getElementById('error-message');
-
-      if (!email || !password || (isSignup && !usernameField.value.trim())) {
-        errorBox.style.display = 'block';
-        errorBox.textContent = 'Please fill in all fields.';
-        return;
-      }
-
-      const username = (isSignup ? usernameField.value.trim() : (localStorage.getItem('voyagerUsername') || email.split('@')[0]));
-      localStorage.setItem('voyagerUsername', username);
-
-      showPage('main-content');
-      document.getElementById('greeting').textContent = `👋 Hi, ${username}! Welcome to Vigilent Voyager 🚀`;
-      getAccurateLocation();
-    }
-
-    // ---------- trip flow ----------
-    function selectTripType(el, type) {
-      selectedTripType = type;
-      document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-selection'));
-      el.classList.add('active-selection');
-      selectedDistance = null; selectedExperience = null;
-      document.getElementById('distance-container').style.display = 'block';
-      document.getElementById('experience-container').style.display = 'none';
-      // smooth scroll on small screens
-      el.scrollIntoView({behavior:'smooth', block:'center'});
-    }
-
-    function selectDistance(el, distance) {
-      selectedDistance = distance;
-      document.querySelectorAll('.distance-card').forEach(c => c.classList.remove('active-selection'));
-      el.classList.add('active-selection');
-      document.getElementById('experience-container').style.display = 'block';
-      el.scrollIntoView({behavior:'smooth', block:'center'});
-    }
-
-    function selectExperience(el, exp) {
-      selectedExperience = exp;
-      document.querySelectorAll('.experience-card').forEach(c => c.classList.remove('active-selection'));
-      el.classList.add('active-selection');
-      showResults();
-    }
-
-    function showResults() {
-      const grid = document.getElementById("resultsGrid");
-      grid.innerHTML = "";
-      if (!selectedTripType || !selectedExperience || (selectedDistance === null || selectedDistance === undefined)) {
-        grid.innerHTML = '<p style="padding:18px;color:#333">Please choose trip type, distance, and experience.</p>';
-        document.getElementById('results-title').textContent = 'Suggested Places';
-        showPage("results-page");
-        return;
-      }
-
-      const list = (PLACES[selectedTripType] && PLACES[selectedTripType][selectedExperience]) || [];
-      const filtered = list.filter(item => item.distance <= selectedDistance);
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `<p style="padding:18px;color:#333">No locations found within ${selectedDistance} km for ${selectedTripType} — ${selectedExperience}.</p>`;
-        document.getElementById('results-title').textContent = `Suggested Places for ${selectedTripType} • ${selectedExperience}`;
-        showPage("results-page");
-        return;
-      }
-
-      filtered.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "result-card";
-        card.innerHTML = `
-          <img src="${p.img}" alt="${escapeHTML(p.name)}">
-          <div class="result-info">
-            <h3>${escapeHTML(p.name)}</h3>
-            <p>${escapeHTML(p.type)} — ${p.distance} km away</p>
-            <div style="margin-top:8px;display:flex;gap:8px;justify-content:center">
-              <button class="btn" onclick="openMap('${encodeURIComponent(p.name)}')">📍 View on Map</button>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
+  try {
+    if (isSignup) {
+      // Attempt Supabase sign up
+      const signUpRes = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: { username }
+        }
       });
 
-      document.getElementById("results-title").textContent = `Suggested Places for ${selectedTripType} • ${selectedExperience}`;
-      showPage("results-page");
-    }
-
-    function escapeHTML(str) {
-      return String(str).replace(/[&<>"']/g, function (m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
-    }
-
-    function openMap(placeNameEncoded) {
-      const placeName = decodeURIComponent(placeNameEncoded);
-      const mapUrl = 'https://www.google.com/maps?q=' + encodeURIComponent(placeName) + '&output=embed';
-      const overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:99999;padding:20px;';
-      const modal = document.createElement('div');
-      modal.style.cssText = 'width:100%;max-width:1000px;height:80vh;background:white;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.4);overflow:hidden;position:relative;display:flex;flex-direction:column;';
-      const closeBtn = document.createElement('button');
-      closeBtn.textContent = '✖ Close';
-      closeBtn.style.cssText = 'position:absolute;right:12px;top:12px;z-index:3;background:#007BFF;color:white;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;';
-      const iframe = document.createElement('iframe');
-      iframe.src = mapUrl;
-      iframe.width = '100%';
-      iframe.height = '100%';
-      iframe.style.border = '0';
-      iframe.style.flex = '1 1 auto';
-      modal.appendChild(closeBtn);
-      modal.appendChild(iframe);
-      overlay.appendChild(modal);
-      document.body.appendChild(overlay);
-      closeBtn.addEventListener('click', () => overlay.remove());
-      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-    }
-
-    // ---------- location helpers ----------
-    async function getAccurateLocation() {
-      const a = document.getElementById('area');
-      const d = document.getElementById('district');
-      const s = document.getElementById('state');
-
-      if (!navigator.geolocation) {
-        a.textContent = 'Unavailable'; d.textContent = 'Unavailable'; s.textContent = 'Unavailable'; return;
+      if (signUpRes.error) {
+        // common messages: "User already registered", "Email signups disabled", etc.
+        errorBox.textContent = signUpRes.error.message || 'Signup failed.';
+        errorBox.style.display = 'block';
+        return;
       }
 
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+      // If signUpRes.data.user exists then immediate user created; otherwise email verification pending
+      if (signUpRes.data?.user) {
+        // user created immediately
+        const user = signUpRes.data.user;
+        // try to upsert profile table (if exists). ignore errors
         try {
-          const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2&addressdetails=1`;
-          const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-          const json = await res.json();
-          const addr = json.address || {};
-          a.textContent = addr.suburb || addr.neighbourhood || addr.village || addr.city || addr.town || 'N/A';
-          d.textContent = addr.county || addr.state_district || addr.city || 'N/A';
-          s.textContent = addr.state || addr.region || 'N/A';
+          await supabase.from('profiles').upsert({ id: user.id, username, created_at: new Date().toISOString() });
         } catch (err) {
-          a.textContent = `Lat: ${lat.toFixed(4)}`; d.textContent = `Lon: ${lon.toFixed(4)}`; s.textContent = '(approx)';
+          console.warn('profiles upsert failed (table may not exist):', err.message || err);
         }
-      }, async () => {
-        try {
-          const res = await fetch('https://ipapi.co/json/');
-          const ip = await res.json();
-          a.textContent = ip.city || 'N/A'; d.textContent = ip.region || 'N/A'; s.textContent = ip.country_name || 'N/A';
-        } catch {
-          a.textContent = 'Unavailable'; d.textContent = 'Unavailable'; s.textContent = 'Unavailable';
-        }
-      }, { timeout: 10000 });
-    }
 
-    // ---------- SAFE SCORE ----------
-    function safeScore() {
-      showPage('safe-score-section');
-      const desc = document.querySelector('.safe-desc');
-      desc.textContent = 'Fetching safety data for your area...';
-      setTimeout(() => {
-        const harassment = getRandomScore(30,95);
-        const theft = getRandomScore(20,90);
-        const police = getRandomScore(40,100);
-        updateScore('harassmentScore', harassment);
-        updateScore('theftScore', theft);
-        updateScore('policeScore', police);
-        const overall = Math.round((harassment + theft + police) / 3);
-        document.getElementById('overallSafeScore').textContent = `Overall Safe Score: ${overall}/100`;
-        desc.textContent = 'Scores are estimated using local reports and user-sourced trends (simulated).';
-      }, 1000);
+        // Persist locally for next visits
+        localStorage.setItem('voyagerUsername', username);
+        localStorage.setItem('voyagerEmail', email);
+        document.getElementById('greeting').textContent = `👋 Hi, ${username}! Welcome to Vigilent Voyager 🚀`;
+        showPage('main-content');
+        getAccurateLocation();
+        return;
+      } else {
+        // likely requires email confirmation
+        verifyNote.style.display = 'block';
+        // store email+username locally so we can prefill next time
+        localStorage.setItem('voyagerUsername', username);
+        localStorage.setItem('voyagerEmail', email);
+        // switch to login mode
+        toggleForm(false);
+        return;
+      }
+    } else {
+      // Login flow: we use provided email to sign in.
+      const signInRes = await supabase.auth.signInWithPassword({ email, password });
+      if (signInRes.error) {
+        // If the server returns "User not found" or "Invalid login credentials", show message
+        errorBox.textContent = signInRes.error.message || 'Login failed.';
+        errorBox.style.display = 'block';
+        return;
+      }
+      const user = signInRes.data?.user;
+      // store local info
+      localStorage.setItem('voyagerUsername', username);
+      localStorage.setItem('voyagerEmail', email);
+      document.getElementById('greeting').textContent = `👋 Hi, ${username}! Welcome to Vigilent Voyager 🚀`;
+      showPage('main-content');
+      getAccurateLocation();
+      return;
     }
+  } catch (err) {
+    console.error('Auth error:', err);
+    errorBox.textContent = err.message || String(err);
+    errorBox.style.display = 'block';
+    return;
+  }
+}
 
-    function getRandomScore(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+/* toggleForm: show signup or login UI. If param provided, set explicit; else toggle current */
+function toggleForm(forceState) {
+  if (typeof forceState === 'boolean') isSignup = forceState;
+  else isSignup = !isSignup;
 
-    function updateScore(cardId, score) {
-      const card = document.getElementById(cardId);
-      if (!card) return;
-      const valueEl = card.querySelector('.score-value');
-      const labelEl = card.querySelector('.score-label');
-      valueEl.textContent = `${score}/100`;
-      if (score >= 80) { valueEl.style.color = '#00b894'; labelEl.textContent = 'Very Safe'; }
-      else if (score >= 60) { valueEl.style.color = '#f1c40f'; labelEl.textContent = 'Moderately Safe'; }
-      else { valueEl.style.color = '#e74c3c'; labelEl.textContent = 'Risky'; }
+  const title = document.getElementById('form-title');
+  const submitBtn = document.getElementById('submitBtn');
+  const toggleText = document.getElementById('toggleFormBtn');
+  const verifyNote = document.getElementById('verify-note');
+  const usernameEl = document.getElementById('username');
+
+  verifyNote.style.display = 'none';
+  if (isSignup) {
+    title.textContent = 'Create Account';
+    submitBtn.textContent = 'Sign Up';
+    toggleText.textContent = 'Already have an account? Login';
+    usernameEl.placeholder = 'Choose a username';
+  } else {
+    title.textContent = 'Login';
+    submitBtn.textContent = 'Login';
+    toggleText.textContent = "Don't have an account? Create one";
+    usernameEl.placeholder = 'Username';
+  }
+}
+
+/* ===========================
+   Session check and boot logic
+   =========================== */
+document.addEventListener('DOMContentLoaded', () => {
+  // wire up basic UI
+  document.getElementById('getStartedBtn').addEventListener('click', () => showPage('login-screen'));
+  document.getElementById('toggleFormBtn').addEventListener('click', () => toggleForm());
+  document.getElementById('submitBtn').addEventListener('click', handleAuthClick);
+  document.getElementById('planTripBtn').addEventListener('click', () => showPage('trip-options'));
+  document.getElementById('safeScoreBtn').addEventListener('click', safeScore);
+  document.getElementById('tripBackBtn').addEventListener('click', () => showPage('main-content'));
+  document.getElementById('safeBackBtn').addEventListener('click', () => showPage('main-content'));
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    if (supabase) await supabase.auth.signOut();
+    localStorage.removeItem('voyagerUsername');
+    localStorage.removeItem('voyagerEmail');
+    // return to login screen
+    document.getElementById('email').readOnly = false;
+    document.getElementById('email').value = '';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    toggleForm(false);
+    showPage('login-screen');
+  });
+
+  // trip selection wiring
+  document.querySelectorAll('.trip-card').forEach(el => el.addEventListener('click', () => selectTripType(el, el.dataset.type)));
+  document.querySelectorAll('.distance-card').forEach(el => el.addEventListener('click', () => selectDistance(el, parseFloat(el.dataset.distance))));
+  document.querySelectorAll('.experience-card').forEach(el => el.addEventListener('click', () => selectExperience(el, el.dataset.exp)));
+
+  // On load: check for existing local data to prefill
+  const storedEmail = localStorage.getItem('voyagerEmail');
+  const storedUsername = localStorage.getItem('voyagerUsername');
+
+  if (storedEmail) {
+    // prefill email and make readonly (so user doesn't have to type email again)
+    const emailEl = document.getElementById('email');
+    emailEl.value = storedEmail;
+    emailEl.readOnly = true;
+  }
+  if (storedUsername) {
+    document.getElementById('username').value = storedUsername;
+  }
+
+  // If Supabase exists, check session. If session exists show main-content.
+  (async () => {
+    if (!supabase) {
+      // no Supabase — show login screen (local-only)
+      showPage('login-screen');
+      return;
     }
-  </script>
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        console.warn('Session check: ', error);
+        showPage('login-screen');
+        return;
+      }
+      if (data?.session?.user) {
+        // session exists — fill greeting (prefer username from localStorage)
+        const user = data.session.user;
+        let username = localStorage.getItem('voyagerUsername') || (user.email ? user.email.split('@')[0] : 'Traveler');
+        document.getElementById('greeting').textContent = `👋 Hi, ${username}! Welcome back to Vigilent Voyager 🚀`;
+        showPage('main-content');
+        getAccurateLocation();
+      } else {
+        // not logged in
+        showPage('login-screen');
+      }
+    } catch (err) {
+      console.warn('Session check failed', err);
+      showPage('login-screen');
+    }
+  })();
+});
+
+/* =================
+   Trip selection code
+   ================= */
+function selectTripType(el, type) {
+  selectedTripType = type;
+  document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-selection'));
+  el.classList.add('active-selection');
+  selectedDistance = null; selectedExperience = null;
+  document.getElementById('distance-container').style.display = 'block';
+  document.getElementById('experience-container').style.display = 'none';
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function selectDistance(el, distance) {
+  selectedDistance = distance;
+  document.querySelectorAll('.distance-card').forEach(c => c.classList.remove('active-selection'));
+  el.classList.add('active-selection');
+  document.getElementById('experience-container').style.display = 'block';
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function selectExperience(el, exp) {
+  selectedExperience = exp;
+  document.querySelectorAll('.experience-card').forEach(c => c.classList.remove('active-selection'));
+  el.classList.add('active-selection');
+  showResults();
+}
+
+function showResults() {
+  const grid = document.getElementById("resultsGrid");
+  grid.innerHTML = "";
+  if (!selectedTripType || !selectedExperience || (selectedDistance === null || selectedDistance === undefined)) {
+    grid.innerHTML = '<p style="padding:18px;color:#333">Please choose trip type, distance, and experience.</p>';
+    document.getElementById('results-title').textContent = 'Suggested Places';
+    showPage("results-page");
+    return;
+  }
+
+  const list = (PLACES[selectedTripType] && PLACES[selectedTripType][selectedExperience]) || [];
+  const filtered = list.filter(item => (typeof item.distance === 'number') ? item.distance <= selectedDistance : true);
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="padding:18px;color:#333">No locations found within ${selectedDistance} km for ${selectedTripType} — ${selectedExperience}.</p>`;
+    document.getElementById('results-title').textContent = `Suggested Places for ${selectedTripType} • ${selectedExperience}`;
+    showPage("results-page");
+    return;
+  }
+
+  filtered.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "result-card";
+    const imgSrc = p.img || 'botanical.jpg';
+    card.innerHTML = `
+      <img src="${escapeHTML(imgSrc)}" alt="${escapeHTML(p.name)}" onerror="this.onerror=null;this.src='botanical.jpg'">
+      <div class="result-info">
+        <h3>${escapeHTML(p.name)}</h3>
+        <p>${escapeHTML(p.type)} — ${p.distance} km away</p>
+        <div style="margin-top:8px;display:flex;gap:8px;justify-content:center">
+          <button class="btn" onclick="openMap('${encodeURIComponent(p.name)}')">📍 View on Map</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById("results-title").textContent = `Suggested Places for ${selectedTripType} • ${selectedExperience}`;
+  showPage("results-page");
+}
+
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, function (m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; });
+}
+
+function openMap(placeNameEncoded) {
+  const placeName = decodeURIComponent(placeNameEncoded);
+  const mapUrl = 'https://www.google.com/maps?q=' + encodeURIComponent(placeName);
+  const overlay = document.createElement('div');
+  overlay.className = 'vv-overlay';
+  const modal = document.createElement('div');
+  modal.className = 'vv-modal';
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'vv-close';
+  closeBtn.textContent = '✖ Close';
+  const iframe = document.createElement('iframe');
+  iframe.src = mapUrl;
+  iframe.width = '100%';
+  iframe.height = '100%';
+  iframe.style.border = '0';
+  iframe.style.flex = '1 1 auto';
+  modal.appendChild(closeBtn);
+  modal.appendChild(iframe);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+  closeBtn.addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+}
+
+/* =================
+   Location helpers
+   ================= */
+async function getAccurateLocation() {
+  const a = document.getElementById('area');
+  const d = document.getElementById('district');
+  const s = document.getElementById('state');
+
+  if (!navigator.geolocation) {
+    a.textContent = 'Unavailable'; d.textContent = 'Unavailable'; s.textContent = 'Unavailable'; return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2&addressdetails=1`;
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      const json = await res.json();
+      const addr = json.address || {};
+      a.textContent = addr.suburb || addr.neighbourhood || addr.village || addr.city || addr.town || 'N/A';
+      d.textContent = addr.county || addr.state_district || addr.city || 'N/A';
+      s.textContent = addr.state || addr.region || 'N/A';
+    } catch (err) {
+      a.textContent = `Lat: ${lat.toFixed(4)}`; d.textContent = `Lon: ${lon.toFixed(4)}`; s.textContent = '(approx)';
+    }
+  }, async () => {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const ip = await res.json();
+      a.textContent = ip.city || 'N/A'; d.textContent = ip.region || 'N/A'; s.textContent = ip.country_name || 'N/A';
+    } catch {
+      a.textContent = 'Unavailable'; d.textContent = 'Unavailable'; s.textContent = 'Unavailable';
+    }
+  }, { timeout: 10000 });
+}
+
+/* =================
+   Safe score
+   ================= */
+function safeScore() {
+  showPage('safe-score-section');
+  const desc = document.querySelector('.safe-desc');
+  desc.textContent = 'Fetching safety data for your area...';
+  setTimeout(() => {
+    const harassment = getRandomScore(30,95);
+    const theft = getRandomScore(20,90);
+    const police = getRandomScore(40,100);
+    updateScore('harassmentScore', harassment);
+    updateScore('theftScore', theft);
+    updateScore('policeScore', police);
+    const overall = Math.round((harassment + theft + police) / 3);
+    document.getElementById('overallSafeScore').textContent = `Overall Safe Score: ${overall}/100`;
+    desc.textContent = 'Scores are estimated using local reports and user-sourced trends (simulated).';
+  }, 800);
+}
+
+function getRandomScore(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function updateScore(cardId, score) {
+  const card = document.getElementById(cardId);
+  if (!card) return;
+  const valueEl = card.querySelector('.score-value');
+  const labelEl = card.querySelector('.score-label');
+  valueEl.textContent = `${score}/100`;
+  if (score >= 80) { valueEl.style.color = '#00b894'; labelEl.textContent = 'Very Safe'; }
+  else if (score >= 60) { valueEl.style.color = '#f1c40f'; labelEl.textContent = 'Moderately Safe'; }
+  else { valueEl.style.color = '#e74c3c'; labelEl.textContent = 'Risky'; }
+}
+
+/* Final: if supabase unavailable warn */
+if (!supabase) console.warn('Supabase client unavailable: server-backed auth will not work.');
+
+</script>
 </body>
 </html>
